@@ -1,3 +1,7 @@
+'''
+Particle trajectory affected by gravity
+'''
+
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
