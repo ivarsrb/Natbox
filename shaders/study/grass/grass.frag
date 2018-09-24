@@ -1,6 +1,6 @@
 #version 450 core
 
-in VertexData {
+in VertexDataV {
     vec3 color;
 } i;
 

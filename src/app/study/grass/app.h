@@ -8,7 +8,7 @@
 #include <engine/core/types.h>
 #include <engine/util/timing.h>
 #include "types.h"
-#include "plant.h"
+#include "grass_blade.h"
 
 namespace app::study::grass {
 class App : public engine::platform::IPlatformApp {
@@ -35,7 +35,6 @@ private:
     engine::tp::Real z_near_;
     engine::tp::Real z_far_;
     std::unique_ptr<engine::renderer::gl::Program> pipeline_;
-    std::unique_ptr<Plant> plant_;
-    std::vector<glm::tvec3<engine::tp::Real>> plants_;
+    std::unique_ptr<GrassBlade> grass_blade_;
 };
 };

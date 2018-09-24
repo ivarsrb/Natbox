@@ -67,7 +67,7 @@ GLboolean Buffer::Unmap() {
 }
 
 // Write subdata to named buffer
-// Us i to change buffer data at runtime
+// Us it to change buffer data at runtime
 // Must have set GL_DYNAMIC_STORAGE_BIT in the flags parameter to glNamedBufferStorage()
 void Buffer::SubData(GLintptr offset, GLsizeiptr size, const void * data) {
     glNamedBufferSubData(name_, offset, size, data);

@@ -1,51 +1,46 @@
 #include "plant.h"
-#include <vector>
-#include <glm/gtc/matrix_transform.hpp>
-#include <imgui/imgui.h>
-#include <engine/renderer/types.h>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/vector_angle.hpp>
 
 using namespace engine;
-
 namespace app::study::grass {
-Plant::Plant(renderer::RenderDevice &render_device ) {
-    Init(render_device);
+
+PlantNode::PlantNode(const glm::tvec3<tp::Real> &edge, const glm::tvec2<tp::Real> &angle, const tp::Real length):
+                    origin(edge), angle_(angle), length_(length) {
+    static_angle_ = angle_;
 }
 
-void Plant::Init(renderer::RenderDevice &render_device) {
-    // Vertices
-    std::vector<renderer::types::FPos> vertices;
-    for(size_t i = 0; i < 3; i++) {
-        vertices.push_back({ glm::vec3(0.0 + i*0.1, 0.0, 0.0) });
+Plant::Plant(const std::vector<glm::tvec3<tp::Real>> &edges) {
+    for (auto edge_it = edges.cbegin(); edge_it != edges.cend(); ++edge_it) {
+        auto next_edge_it = std::next(edge_it);
+        tp::Real node_length = 0.0;
+        glm::tvec2<tp::Real> rot_angle(0.0,0.0);
+        if(next_edge_it != edges.end()) {
+            node_length = glm::distance(*edge_it, *next_edge_it);
+            rot_angle.x = glm::angle( glm::normalize(*next_edge_it - *edge_it), glm::tvec3<tp::Real>(1.0,0.0,0.0));
+            rot_angle.y = glm::angle( glm::normalize(*next_edge_it - *edge_it), glm::tvec3<tp::Real>(0.0,0.0,1.0));
+        }
+        // Final is a dummy node that stores only origin but does not have length
+        nodes_.emplace_back(*edge_it, rot_angle, node_length);
+        //std::cout << "----------- " << glm::degrees(rot_angle.x) << " " << glm::degrees(rot_angle.y) << "\n";
     }
-    vertex_count_ = vertices.size();
-    // Vertex buffer
-    uint32_t vertex_type_size = sizeof(decltype(vertices)::value_type);
-    vertex_buffers_.push_back(render_device.CreateVertexBuffer(vertex_count_ * vertex_type_size, vertices.data()));
-
-    // Vertex array
-    std::vector<renderer::types::VertexAttributeDescr> vertex_attributes(1);
-    vertex_attributes.at(0).attribute_index = renderer::RenderDevice::AttribLocation::kPosition;
-    vertex_attributes.at(0).size = vertex_type_size / sizeof(float); // 3  // (start_of_next_attrib - start_of_this_attrib) / size_of_single_element_type
-    vertex_attributes.at(0).type = renderer::types::RenderDataTypes::kFloat;
-    vertex_attributes.at(0).offset = 0;
-    vertex_attributes.at(0).stride = vertex_type_size; // always the same for all atributes within vertex array
-
-    vertex_array_ = std::make_unique<renderer::gl::VertexArray>(render_device.CreateVertexArray(vertex_buffers_, vertex_attributes));
 }
 
-
-void Plant::Render(renderer::RenderDevice &render_device, renderer::gl::Buffer &uniform_buffer_scene, ShaderData &shader_data, 
-                   glm::tvec3<engine::tp::Real> position) {
-    shader_data.world_from_local = glm::translate(glm::tmat4x4<tp::Real>(1.0), position);
-    uniform_buffer_scene.SubData(offsetof(ShaderData, world_from_local), sizeof(ShaderData::world_from_local), &shader_data.world_from_local[0]);
-    
-    vertex_array_->Bind();
-    render_device.DrawPoints(0, vertex_count_);
-    vertex_array_->Unbind();
- }
-
-void Plant::RenderGui() {
-    ImGui::Begin("Plant");
-    ImGui::End();
+void Plant::FillVertices(std::vector<renderer::types::FPos> &vertices, uint32_t start_index) {
+    for (const auto& node : nodes_) {
+        vertices.at(start_index++).position = node.origin;
+    }
 }
+
+void Plant::Update(tp::Real dt) {
+    /*
+    int a = 0;
+    for (auto& node : nodes_) {
+        if (a > 0)
+            node.origin += glm::tvec3<tp::Real>(1.0, 0.0, 0.0)  * dt;
+        a++;
+    }
+    */
+}
+
 };

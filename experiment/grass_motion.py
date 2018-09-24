@@ -117,10 +117,10 @@ canvas.pack()
 ###############################################################
 blade = Blade(0.0,0.0, [Edge(0.0,0.0), 
                         Edge(0.0,1.0),
-                        #Edge(0.0,2.0),
+                        Edge(0.0,2.0),
+                        Edge(0.0,3.0),
+                        #Edge(0.5,1.5),
                         #Edge(0.0,3.0),
-                        Edge(0.5,1.5),
-                        Edge(1.0,1.0),
 
                         ])
 wind = Wind()
@@ -204,8 +204,8 @@ while True:
         #print("torque ", torque, ", abg accel ", ang_accel, ", velo ", this_edge.ang_velocity, ",  delta etha ",delta_etha , " , dt ", dt)
 
         # forces for debugging
-        #canvas.coords(windf_line,[ forces_origin[0], width - forces_origin[1],  forces_origin[0] + forces_zoom*wind_force[0], width - (forces_origin[1] + forces_zoom*wind_force[1])] )
-        #canvas.coords(restf_line,[ forces_origin[0], width - forces_origin[1],  forces_origin[0] + forces_zoom*rest_force[0], width - (forces_origin[1] + forces_zoom*rest_force[1])] )
+        canvas.coords(windf_line,[ forces_origin[0], width - forces_origin[1],  forces_origin[0] + forces_zoom*wind_force[0], width - (forces_origin[1] + forces_zoom*wind_force[1])] )
+        canvas.coords(restf_line,[ forces_origin[0], width - forces_origin[1],  forces_origin[0] + forces_zoom*rest_force[0], width - (forces_origin[1] + forces_zoom*rest_force[1])] )
         #canvas.coords(dampf_line,[ forces_origin[0], width - forces_origin[1],  forces_origin[0] + forces_zoom*dampening_force[0], width - (forces_origin[1] + forces_zoom*dampening_force[1])] )
         #canvas.coords(fullf_line,[ origin[0], origin[1],  origin[0] + magnify*total_force[0], origin[1] + magnify*total_force[1]] )
         

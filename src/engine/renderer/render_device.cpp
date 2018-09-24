@@ -70,9 +70,10 @@ gl::Buffer RenderDevice::CreateUniformBuffer(uint32_t uniform_block_size, uint32
     return uniform_buffer;
 }
 
-gl::Buffer RenderDevice::CreateVertexBuffer(const uint64_t size, const void * data) {
+gl::Buffer RenderDevice::CreateVertexBuffer(const uint64_t size, const void * data, bool dynamic) {
     gl::Buffer vertex_buffer;
-    vertex_buffer.Storage(size, data, 0);
+    GLbitfield flag = (dynamic ? GL_DYNAMIC_STORAGE_BIT : 0);
+    vertex_buffer.Storage(size, data, flag);
     return vertex_buffer;
 }
 

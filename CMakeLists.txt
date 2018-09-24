@@ -34,7 +34,8 @@ set(SOURCES
             ${SOURCE_DIR}/app/study/terrain/tile.cpp  
 
             ${SOURCE_DIR}/app/study/grass/app.cpp    
-            ${SOURCE_DIR}/app/study/grass/plant.cpp     
+            ${SOURCE_DIR}/app/study/grass/plant.cpp 
+            ${SOURCE_DIR}/app/study/grass/grass_blade.cpp     
     )
 
 #### Packages

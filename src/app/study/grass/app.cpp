@@ -43,17 +43,14 @@ void App::Init() {
 
     // Shader
     std::string  vs_source = std::string(SHADER_PATH) + "grass.vert";
-    std::string  gs_source = std::string(SHADER_PATH) + "grass.geom";
     std::string  ps_source = std::string(SHADER_PATH) + "grass.frag";
     std::vector<renderer::gl::Shader> shaders;
     shaders.push_back(render_device_.CreateVertexShader(vs_source));
-    shaders.push_back(render_device_.CreateGeometryShader(gs_source));
     shaders.push_back(render_device_.CreatePixelShader(ps_source));
     pipeline_ = std::make_unique<renderer::gl::Program>(render_device_.CreatePipeline(shaders));
 
     // Plants
-    plant_ = std::make_unique<Plant>(render_device_);
-    plants_.push_back(glm::tvec3<tp::Real>(0.0, 0.0, 0.0));
+    grass_blade_ = std::make_unique<GrassBlade>(render_device_);
 }
 
 void App::Update(const platform::IPlatformApp::Timing *time, const platform::Input *input) {
@@ -66,6 +63,8 @@ void App::Update(const platform::IPlatformApp::Timing *time, const platform::Inp
         camera_->ProcessKeyboard(core::Camera::kLeft, (tp::Real)time->delta);
     if (input->keyboard.active[platform::Input::Key::kD])
         camera_->ProcessKeyboard(core::Camera::kRight, (tp::Real)time->delta);
+
+    grass_blade_->Update((tp::Real)time->delta);
 }
 
 void App::Render(const platform::IPlatformApp::Timing *time) {
@@ -74,9 +73,7 @@ void App::Render(const platform::IPlatformApp::Timing *time) {
     shader_data_.view_from_world = camera_->GetViewMatrix();
     uniform_buffer_scene_->SubData(offsetof(ShaderData, view_from_world), sizeof(ShaderData::view_from_world), &shader_data_.view_from_world[0]);
     pipeline_->Use();
-    for (auto position : plants_) {
-        plant_->Render(render_device_, *uniform_buffer_scene_, shader_data_, position);
-    }
+    grass_blade_->Render(render_device_, *uniform_buffer_scene_, shader_data_, glm::vec3(0.0, 0.0, 0.0));
 
     if (USE_GUI) {
         RenderGui();
@@ -108,7 +105,7 @@ void App::RenderGui() {
     ImGui::SliderFloat("Speed unit/s ", &cam_speed, 1.4f, 5000.0f);
     camera_->SetSpeed(cam_speed);
 
-    plant_->RenderGui();
+    grass_blade_->RenderGui();
 }
 
 void App::Resize(const glm::ivec2 &size) {

@@ -8,7 +8,7 @@ layout(std140, binding = 0) uniform SceneUniforms {
 	mat4 world_from_local;
 } u;
 
-out VertexDataG {
+out VertexDataV {
     vec3 color;
 } o;
 

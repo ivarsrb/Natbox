@@ -1,20 +1,29 @@
 #pragma once
-#include <memory>
-#include <engine/renderer/render_device.h>
+#include <vector>
+#include <glm/glm.hpp>
 #include <engine/core/types.h>
-#include "types.h"
+#include <engine/renderer/types.h>
 
 namespace app::study::grass {
+
+class PlantNode {
+public:
+    PlantNode(const glm::tvec3<engine::tp::Real> &edge, const glm::tvec2<engine::tp::Real> &angle, const engine::tp::Real length);
+    glm::tvec3<engine::tp::Real> origin;
+private:
+    glm::tvec2<engine::tp::Real> angle_;
+    glm::tvec2<engine::tp::Real> static_angle_;
+    engine::tp::Real length_;
+};
+
+
 class Plant {
 public:
-    Plant(engine::renderer::RenderDevice &render_device );
-    void Render(engine::renderer::RenderDevice &render_device, engine::renderer::gl::Buffer &uniform_buffer_scene, ShaderData &shader_data,
-               glm::tvec3<engine::tp::Real> position);
-    void RenderGui();
+    Plant(const std::vector<glm::tvec3<engine::tp::Real>> &edges);
+    void FillVertices(std::vector<engine::renderer::types::FPos> &vertices, uint32_t start_index);
+    void Update(engine::tp::Real dt);
 private:
-    void Init(engine::renderer::RenderDevice &render_device);
-    std::vector<engine::renderer::gl::Buffer> vertex_buffers_;
-    std::unique_ptr<engine::renderer::gl::VertexArray> vertex_array_;
-    uint32_t vertex_count_;
+    std::vector<PlantNode> nodes_;
 };
+
 };
