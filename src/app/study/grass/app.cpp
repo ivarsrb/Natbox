@@ -30,7 +30,7 @@ void App::Init() {
     // View port
     render_device_.SetViewport(glm::ivec2(0, 0), IPlatformApp::window_size_);
     
-    camera_ = std::make_unique<core::Camera>(glm::tvec3<tp::Real>(0.0, 0.0, 0.0), (tp::Real)180.0f, (tp::Real)0.0f);
+    camera_ = std::make_unique<core::Camera>(tp::Vec3(0.0, 0.0, 0.0), (tp::Real)180.0f, (tp::Real)0.0f);
     camera_->SetSpeed(1.4);
     z_near_ = 0.1;
     z_far_ = 100.0;
@@ -73,7 +73,7 @@ void App::Render(const platform::IPlatformApp::Timing *time) {
     shader_data_.view_from_world = camera_->GetViewMatrix();
     uniform_buffer_scene_->SubData(offsetof(ShaderData, view_from_world), sizeof(ShaderData::view_from_world), &shader_data_.view_from_world[0]);
     pipeline_->Use();
-    grass_blade_->Render(render_device_, *uniform_buffer_scene_, shader_data_, glm::vec3(0.0, 0.0, 0.0));
+    grass_blade_->Render(render_device_, *uniform_buffer_scene_, shader_data_, tp::Vec3(0.0, 0.0, 0.0));
 
     if (USE_GUI) {
         RenderGui();

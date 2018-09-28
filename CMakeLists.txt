@@ -28,12 +28,14 @@ set(SOURCES
             ${SOURCE_DIR}/engine/renderer/gl/texture_2d.cpp
             ${SOURCE_DIR}/engine/renderer/gl/vertex_array.cpp
             ${SOURCE_DIR}/engine/util/timing.cpp
+            ${SOURCE_DIR}/engine/util/math.cpp
 
             ${SOURCE_DIR}/app/study/terrain/app.cpp
             ${SOURCE_DIR}/app/study/terrain/terrain.cpp
             ${SOURCE_DIR}/app/study/terrain/tile.cpp  
 
-            ${SOURCE_DIR}/app/study/grass/app.cpp    
+            ${SOURCE_DIR}/app/study/grass/app.cpp
+            ${SOURCE_DIR}/app/study/grass/plant_node.cpp
             ${SOURCE_DIR}/app/study/grass/plant.cpp 
             ${SOURCE_DIR}/app/study/grass/grass_blade.cpp     
     )
@@ -44,6 +46,7 @@ find_package(glfw3 3.2 REQUIRED)
 
 #### Compile and link flags
 # -D _DEBUG is to define debug symbol to work like in Visual Studio
+# -D NDEBUG will disable assert()
 SET(GCC_COVERAGE_COMPILE_FLAGS "-g -Wall -D _DEBUG")
 SET(GCC_COVERAGE_LINK_FLAGS    "")
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )

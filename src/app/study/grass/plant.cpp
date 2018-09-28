@@ -1,46 +1,66 @@
 #include "plant.h"
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/vector_angle.hpp>
+#include <iostream>
+#define GLM_ENABLE_EXPERIMENTAL 
+#include <glm/gtx/string_cast.hpp>
 
 using namespace engine;
+
 namespace app::study::grass {
 
-PlantNode::PlantNode(const glm::tvec3<tp::Real> &edge, const glm::tvec2<tp::Real> &angle, const tp::Real length):
-                    origin(edge), angle_(angle), length_(length) {
-    static_angle_ = angle_;
-}
-
-Plant::Plant(const std::vector<glm::tvec3<tp::Real>> &edges) {
+// NOTE: First point of edges array should always be a root of a plant
+Plant::Plant(const std::vector<tp::Vec3> &edges): static_edges_(edges) {
+    Reset();
+    /*
     for (auto edge_it = edges.cbegin(); edge_it != edges.cend(); ++edge_it) {
         auto next_edge_it = std::next(edge_it);
-        tp::Real node_length = 0.0;
-        glm::tvec2<tp::Real> rot_angle(0.0,0.0);
-        if(next_edge_it != edges.end()) {
-            node_length = glm::distance(*edge_it, *next_edge_it);
-            rot_angle.x = glm::angle( glm::normalize(*next_edge_it - *edge_it), glm::tvec3<tp::Real>(1.0,0.0,0.0));
-            rot_angle.y = glm::angle( glm::normalize(*next_edge_it - *edge_it), glm::tvec3<tp::Real>(0.0,0.0,1.0));
+        util::Math::SphericCoords node_coord;
+        if (next_edge_it != edges.end()) {
+            tp::Pos3D node_vec = *next_edge_it - *edge_it;
+            node_coord = util::Math::CartesianToSpheric(node_vec);
         }
         // Final is a dummy node that stores only origin but does not have length
-        nodes_.emplace_back(*edge_it, rot_angle, node_length);
-        //std::cout << "----------- " << glm::degrees(rot_angle.x) << " " << glm::degrees(rot_angle.y) << "\n";
-    }
-}
-
-void Plant::FillVertices(std::vector<renderer::types::FPos> &vertices, uint32_t start_index) {
-    for (const auto& node : nodes_) {
-        vertices.at(start_index++).position = node.origin;
-    }
-}
-
-void Plant::Update(tp::Real dt) {
-    /*
-    int a = 0;
-    for (auto& node : nodes_) {
-        if (a > 0)
-            node.origin += glm::tvec3<tp::Real>(1.0, 0.0, 0.0)  * dt;
-        a++;
+        nodes_.emplace_back(*edge_it, node_coord);
+        //std::cout << "node- r:" << node_coord.radius << " theta:" << glm::degrees(node_coord.theta) << " phi:" << glm::degrees(node_coord.phi) << "\n";
     }
     */
 }
 
+// Set all edges and nodes to it's original shape
+void Plant::Reset() {
+    edges_ = static_edges_;
+    nodes_.clear();
+    CreateNodesFromEdges(edges_);
+}
+
+// Calculate vector for each section and create node given this vector in cartesian coordinates
+// NOTE: order of nodes is important, it should match order of edges
+void Plant::CreateNodesFromEdges(const std::vector<tp::Vec3> &edges) {
+    for (auto edge_it = edges.cbegin(); edge_it != std::prev(edges.cend()); ++edge_it) {
+        auto next_edge_it = std::next(edge_it);
+        tp::Vec3 node_vec = *next_edge_it - *edge_it;
+        nodes_.emplace_back(node_vec);
+    }
+    /*
+    for (const auto& node : nodes_) {
+        node.Print();
+    }
+    */
+}
+
+void Plant::FillVertices(std::vector<VertexType> &vertices, uint32_t start_index) const {
+    for (const auto& edge : edges_) {
+        vertices.at(start_index++).position = edge;
+    }
+}
+
+// Animate nodes and calculate new edge points of a plant one by one starting at first after the root
+void Plant::Update(tp::Real dt, const tp::Vec3 &wind) {
+    // Since first edge of a plant is root, it always remains the same and we dont update it
+    uint32_t edge_num = 1;
+    for (auto& node : nodes_) {
+        node.Update(dt, wind);
+        edges_.at(edge_num) = edges_.at(edge_num - 1) + node.Vector();
+        edge_num++;
+    }
+}
 };

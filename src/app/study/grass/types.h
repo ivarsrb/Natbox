@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <engine/renderer/types.h>
 
 // App specific data types
 // Data meant to be snet as shader uniforms
@@ -9,4 +10,5 @@ struct ShaderData {
     glm::mat4 projection_from_view;
     glm::mat4 world_from_local;
 };
+using VertexType = engine::renderer::types::FPos;
 };

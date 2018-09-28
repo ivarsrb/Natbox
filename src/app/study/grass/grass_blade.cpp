@@ -12,17 +12,20 @@ GrassBlade::GrassBlade(renderer::RenderDevice &render_device ) {
 }
 
 void GrassBlade::Init(renderer::RenderDevice &render_device) {
-    std::vector<glm::tvec3<tp::Real>> edges;
-    edges.push_back(glm::vec3(0.0, 0.0, 0.0));
-    edges.push_back(glm::vec3(0.0, 1.0, 0.0));
-    edges.push_back(glm::vec3(0.5, 1.5, 0.0));
-    edges.push_back(glm::vec3(1.5, 1.5, 0.0));
+    wind_ = tp::Vec3(1.0, 0.0, 0.0);
+    
+    std::vector<tp::Vec3> edges;
+   
+    edges.push_back(tp::Vec3(0.0, 0.0, 0.0));
+    edges.push_back(tp::Vec3(0.0, 1.0, 0.0));
+    edges.push_back(tp::Vec3(0.5, 1.5, 0.0));
+    edges.push_back(tp::Vec3(1.5, 1.5, 0.0));
 
     blade_ = std::make_unique<Plant>(edges);
     // Vertices set tu dummy
     vertices_.resize(edges.size());
     
-    // Dynamic vertex buffer
+    // Dynamic vertex buffer with currently no data
     vertex_buffers_.push_back(render_device.CreateVertexBuffer(vertices_.size() * sizeof(VertexType), 0, true));
 
     // Vertex array
@@ -37,11 +40,11 @@ void GrassBlade::Init(renderer::RenderDevice &render_device) {
 }
 
 void GrassBlade::Update(engine::tp::Real dt) {
-    blade_->Update(dt);
+    blade_->Update(dt, wind_);
 }
 
 void GrassBlade::Render(renderer::RenderDevice &render_device, renderer::gl::Buffer &uniform_buffer_scene, ShaderData &shader_data, 
-                   glm::tvec3<tp::Real> position) {
+                        tp::Vec3 position) {
     shader_data.world_from_local = glm::translate(glm::tmat4x4<tp::Real>(1.0), position);
     uniform_buffer_scene.SubData(offsetof(ShaderData, world_from_local), sizeof(ShaderData::world_from_local), &shader_data.world_from_local[0]);
     
