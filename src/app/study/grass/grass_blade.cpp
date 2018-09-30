@@ -19,7 +19,7 @@ void GrassBlade::Init(renderer::RenderDevice &render_device) {
     edges.push_back(tp::Vec3(0.0, 0.0, 0.0));
     edges.push_back(tp::Vec3(0.0, 1.0, 0.0));
     edges.push_back(tp::Vec3(0.5, 1.5, 0.0));
-    edges.push_back(tp::Vec3(1.5, 1.5, 0.0));
+    edges.push_back(tp::Vec3(2.5, 1.0, 0.0));
 
     blade_ = std::make_unique<Plant>(edges);
     // Vertices set tu dummy
@@ -59,6 +59,18 @@ void GrassBlade::Render(renderer::RenderDevice &render_device, renderer::gl::Buf
 
 void GrassBlade::RenderGui() {
     ImGui::Begin("Grass blade");
+    ImGui::Text("Wind");
+    if (ImGui::Button("Stop")) {
+       wind_ = tp::Vec3(0.0,0.0,0.0);
+    }
+    float wind_speed = (float)wind_.x;
+    ImGui::SliderFloat("Wind speed (x) ", &wind_speed, -5.0f, 5.0f);
+    wind_.x = wind_speed;
+    ImGui::Separator();
+    ImGui::Text("Plant");
+    if (ImGui::Button("Reset")) {
+       blade_->Reset();
+    }
     ImGui::End();
 }
 };

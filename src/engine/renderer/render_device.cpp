@@ -222,7 +222,7 @@ void RenderDevice::Clear(const ClearBuffer clear ) {
     GLint draw_buffer = 0;
     static const GLfloat one = 1.0f; // TODO think how to go without static
     if (clear == ClearBuffer::kAll || clear == ClearBuffer::kColor || clear == ClearBuffer::kColorDepth) {
-        glm::vec4 clear_color = glm::vec4(0.1f, 0.1f, 0.1f, 1.0f);
+        glm::vec4 clear_color = glm::vec4(0.15f, 0.15f, 0.15f, 1.0f);
         glClearBufferfv(GL_COLOR, draw_buffer, &clear_color[0]);
     }
     if (clear == ClearBuffer::kAll || clear == ClearBuffer::kDepth || clear == ClearBuffer::kColorDepth) {

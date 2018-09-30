@@ -76,12 +76,12 @@ void PlantNode::Update(engine::tp::Real dt, const engine::tp::Vec3 &wind) {
     // R = k * delta_Fi * delta_s_f
     tp::Vec3 restore_force(0.0, 0.0, 0.0);
     if (static_vector_ != current_vector_) {
-        restore_force = 1.0 * glm::angle(glm::normalize(static_vector_), glm::normalize(current_vector_)) * glm::normalize(static_vector_ - current_vector_); 
+        restore_force = 5.0 * glm::angle(glm::normalize(static_vector_), glm::normalize(current_vector_)) * glm::normalize(static_vector_ - current_vector_); 
         //std::cout << glm::to_string(restore_force) << std::endl;
     }
     // F = W + R
     tp::Vec3 totoal_force = deform_force + restore_force;
-    // I = m*r^2
+    // I = m*r^2k
     tp::Real inertia = 0.1 * glm::length(current_vector_) * glm::length(current_vector_);
     // N = Ee x F
     tp::Vec3 torque = glm::cross(current_vector_, totoal_force);

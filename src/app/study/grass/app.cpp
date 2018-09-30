@@ -30,7 +30,7 @@ void App::Init() {
     // View port
     render_device_.SetViewport(glm::ivec2(0, 0), IPlatformApp::window_size_);
     
-    camera_ = std::make_unique<core::Camera>(tp::Vec3(0.0, 0.0, 0.0), (tp::Real)180.0f, (tp::Real)0.0f);
+    camera_ = std::make_unique<core::Camera>(tp::Vec3(0.0, 0.0, -5.0), (tp::Real)180.0f, (tp::Real)0.0f);
     camera_->SetSpeed(1.4);
     z_near_ = 0.1;
     z_far_ = 100.0;
@@ -43,9 +43,11 @@ void App::Init() {
 
     // Shader
     std::string  vs_source = std::string(SHADER_PATH) + "grass.vert";
+    std::string  gs_source = std::string(SHADER_PATH) + "grass.geom";
     std::string  ps_source = std::string(SHADER_PATH) + "grass.frag";
     std::vector<renderer::gl::Shader> shaders;
     shaders.push_back(render_device_.CreateVertexShader(vs_source));
+    shaders.push_back(render_device_.CreateGeometryShader(gs_source));
     shaders.push_back(render_device_.CreatePixelShader(ps_source));
     pipeline_ = std::make_unique<renderer::gl::Program>(render_device_.CreatePipeline(shaders));
 
