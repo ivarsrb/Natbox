@@ -12,9 +12,7 @@ GrassBlade::GrassBlade(renderer::RenderDevice &render_device ) {
 }
 
 void GrassBlade::Init(renderer::RenderDevice &render_device) {
-    wind_ = tp::Vec3(1.0, 0.0, 0.0);
-    
-    std::vector<tp::Vec3> edges;
+     std::vector<tp::Vec3> edges;
    
     edges.push_back(tp::Vec3(0.0, 0.0, 0.0));
     edges.push_back(tp::Vec3(0.0, 1.0, 0.0));
@@ -39,8 +37,8 @@ void GrassBlade::Init(renderer::RenderDevice &render_device) {
     vertex_array_ = std::make_unique<renderer::gl::VertexArray>(render_device.CreateVertexArray(vertex_buffers_, vertex_attributes));
 }
 
-void GrassBlade::Update(engine::tp::Real dt) {
-    blade_->Update(dt, wind_);
+void GrassBlade::Update(engine::tp::Real dt, const Wind &wind) {
+    blade_->Update(dt, wind.CartesianVector());
 }
 
 void GrassBlade::Render(renderer::RenderDevice &render_device, renderer::gl::Buffer &uniform_buffer_scene, ShaderData &shader_data, 
@@ -59,6 +57,7 @@ void GrassBlade::Render(renderer::RenderDevice &render_device, renderer::gl::Buf
 
 void GrassBlade::RenderGui() {
     ImGui::Begin("Grass blade");
+    /*
     ImGui::Text("Wind");
     if (ImGui::Button("Stop")) {
        wind_ = tp::Vec3(0.0,0.0,0.0);
@@ -67,6 +66,7 @@ void GrassBlade::RenderGui() {
     ImGui::SliderFloat("Wind speed (x) ", &wind_speed, -5.0f, 5.0f);
     wind_.x = wind_speed;
     ImGui::Separator();
+    */
     ImGui::Text("Plant");
     if (ImGui::Button("Reset")) {
        blade_->Reset();

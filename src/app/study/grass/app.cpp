@@ -56,6 +56,7 @@ void App::Init() {
 }
 
 void App::Update(const platform::IPlatformApp::Timing *time, const platform::Input *input) {
+    
     // Camera controls using active keys (keys neing currently held)
     if (input->keyboard.active[platform::Input::Key::kW])
         camera_->ProcessKeyboard(core::Camera::kForward, (tp::Real)time->delta);
@@ -66,7 +67,8 @@ void App::Update(const platform::IPlatformApp::Timing *time, const platform::Inp
     if (input->keyboard.active[platform::Input::Key::kD])
         camera_->ProcessKeyboard(core::Camera::kRight, (tp::Real)time->delta);
 
-    grass_blade_->Update((tp::Real)time->delta);
+    wind_.Update((tp::Real)time->delta);
+    grass_blade_->Update((tp::Real)time->delta, wind_);
 }
 
 void App::Render(const platform::IPlatformApp::Timing *time) {
@@ -107,6 +109,7 @@ void App::RenderGui() {
     ImGui::SliderFloat("Speed unit/s ", &cam_speed, 1.4f, 5000.0f);
     camera_->SetSpeed(cam_speed);
 
+    wind_.RenderGui();
     grass_blade_->RenderGui();
 }
 

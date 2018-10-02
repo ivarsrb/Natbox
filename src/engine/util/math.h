@@ -1,21 +1,29 @@
 #pragma once
 #include <engine/core/types.h>
 
-namespace engine::util {
-class Math {
+namespace engine::util::math {
+// To represent spheric coordinate system
+// http://mathworld.wolfram.com/SphericalCoordinates.html
+class SphericVector {
 public:
-    // To represent spheric coordinate system
-    // http://mathworld.wolfram.com/SphericalCoordinates.html
-    struct SphericCoords {
-        tp::Real radius = 0.0;
-        // Wrap-around z axis (0-2*pi) (azimuth)
-        tp::Real theta = 0.0;
-        // 0-pi , goes from z-axis (polar angle)
-        tp::Real phi = 0.0;
+    // Which axis will be wrap-around (0 - 2pi)
+    enum class AzimuthAxis {
+        kZ = 0,
+        kY
     };
-    // Convert point certesian coordinates to spherical coordinates (get radius, theta and phi) 
-    static SphericCoords CartesianToSpheric(const tp::Vec3 &c_point);
-    // Convert spherical coordinates to certesian point
-    static tp::Vec3 SphericToCertesian(const SphericCoords &s_coord);
+    SphericVector(): radius(0), theta(0), phi(0), azimuth_axis_(AzimuthAxis::kY) {}
+    // Vector in cartesian coordinate system is passed and transformed to spheric
+    void InitFromCartesian(const tp::Vec3 &c_point, const AzimuthAxis azimuth = AzimuthAxis::kY);
+    // Convert spherical vector to cartesian vector
+    tp::Vec3 GetCartesian() const;
+
+    tp::Real radius;
+    // Azimuth (0 - 2pi)
+    tp::Real theta;
+    // Polar angle (inclination) (0 - pi)
+    tp::Real phi;
+private:
+    // Wrap-around axis
+    AzimuthAxis azimuth_axis_;
 };
 };

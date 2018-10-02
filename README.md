@@ -18,11 +18,12 @@ Consists of several modules but all have the same purpose - to assist applicatio
 - core - everything else that is needed
 - elements - 
 
+* Available apps (set as first command line argument wwhen running program)
+- terrain
+- grass
+
 * Development process
 a) Create study app to test certain aspect of some rendering.
 b) Think weather some part can be universalized and included into engine.
 c) Add what is learned to the main application (fully functional rendering system) 
 
-* Available apps (set as first command line arument wwhen running program)
-- terrain
-- grass

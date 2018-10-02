@@ -9,6 +9,7 @@
 #include <engine/util/timing.h>
 #include "types.h"
 #include "grass_blade.h"
+#include "wind.h"
 
 namespace app::study::grass {
 class App : public engine::platform::IPlatformApp {
@@ -36,5 +37,6 @@ private:
     engine::tp::Real z_far_;
     std::unique_ptr<engine::renderer::gl::Program> pipeline_;
     std::unique_ptr<GrassBlade> grass_blade_;
+    Wind wind_;
 };
 };

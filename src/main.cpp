@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     catch (const std::exception& e) {
         std::cerr << "EXCEPTION: " << e.what() << std::endl;
     }
+    
     std::cin.ignore().get(); 
     return 0;
 }
