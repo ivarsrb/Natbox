@@ -53,10 +53,10 @@ void App::Init() {
 
     // Plants
     grass_blade_ = std::make_unique<GrassBlade>(render_device_);
+    wind_ = std::make_unique<Wind>(render_device_);
 }
 
 void App::Update(const platform::IPlatformApp::Timing *time, const platform::Input *input) {
-    
     // Camera controls using active keys (keys neing currently held)
     if (input->keyboard.active[platform::Input::Key::kW])
         camera_->ProcessKeyboard(core::Camera::kForward, (tp::Real)time->delta);
@@ -66,9 +66,13 @@ void App::Update(const platform::IPlatformApp::Timing *time, const platform::Inp
         camera_->ProcessKeyboard(core::Camera::kLeft, (tp::Real)time->delta);
     if (input->keyboard.active[platform::Input::Key::kD])
         camera_->ProcessKeyboard(core::Camera::kRight, (tp::Real)time->delta);
+    if (input->keyboard.active[platform::Input::Key::kR])
+        camera_->ProcessKeyboard(core::Camera::kUp, (tp::Real)time->delta);
+    if (input->keyboard.active[platform::Input::Key::kF])
+        camera_->ProcessKeyboard(core::Camera::kDown, (tp::Real)time->delta);
 
-    wind_.Update((tp::Real)time->delta);
-    grass_blade_->Update((tp::Real)time->delta, wind_);
+    wind_->Update((tp::Real)time->delta);
+    grass_blade_->Update((tp::Real)time->delta, *wind_);
 }
 
 void App::Render(const platform::IPlatformApp::Timing *time) {
@@ -78,6 +82,7 @@ void App::Render(const platform::IPlatformApp::Timing *time) {
     uniform_buffer_scene_->SubData(offsetof(ShaderData, view_from_world), sizeof(ShaderData::view_from_world), &shader_data_.view_from_world[0]);
     pipeline_->Use();
     grass_blade_->Render(render_device_, *uniform_buffer_scene_, shader_data_, tp::Vec3(0.0, 0.0, 0.0));
+    wind_->Render(render_device_,*uniform_buffer_scene_, shader_data_);
 
     if (USE_GUI) {
         RenderGui();
@@ -109,7 +114,7 @@ void App::RenderGui() {
     ImGui::SliderFloat("Speed unit/s ", &cam_speed, 1.4f, 5000.0f);
     camera_->SetSpeed(cam_speed);
 
-    wind_.RenderGui();
+    wind_->RenderGui();
     grass_blade_->RenderGui();
 }
 

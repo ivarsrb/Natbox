@@ -2,7 +2,11 @@
 #include <engine/core/types.h>
 
 namespace engine::util::math {
-// To represent spheric coordinate system
+// This tells us that ground plane is x-z plane and normal goes up
+// TODO this constant should belong somehere else
+constexpr tp::Vec3 kGroundNormal(0.0, 1.0, 0.0);
+
+// To represent spheric coordinate system for RIGHT-handed coordinate system
 // http://mathworld.wolfram.com/SphericalCoordinates.html
 class SphericVector {
 public:
@@ -18,9 +22,11 @@ public:
     tp::Vec3 GetCartesian() const;
 
     tp::Real radius;
-    // Azimuth (0 - 2pi)
+    // Azimuth (0 - 2pi) 
+    // In case Y axis is up (AzimuthAxis::kY) angle goes from +Z to +X direction (counter clockwise)
     tp::Real theta;
-    // Polar angle (inclination) (0 - pi)
+    // Polar angle (inclination) (0 - pi) 
+    // In case Y axis is up (AzimuthAxis::kY) angle goes from +Y up being 0 to -Y being PI 
     tp::Real phi;
 private:
     // Wrap-around axis

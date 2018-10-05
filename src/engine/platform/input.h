@@ -17,6 +17,8 @@ public:
         kJ = GLFW_KEY_J,
         kK = GLFW_KEY_K,
         kL = GLFW_KEY_L,
+        kR = GLFW_KEY_R,
+        kF = GLFW_KEY_F,
         kUp = GLFW_KEY_UP,
         kDown = GLFW_KEY_DOWN,
         kLeft = GLFW_KEY_LEFT,

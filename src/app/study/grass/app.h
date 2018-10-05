@@ -37,6 +37,6 @@ private:
     engine::tp::Real z_far_;
     std::unique_ptr<engine::renderer::gl::Program> pipeline_;
     std::unique_ptr<GrassBlade> grass_blade_;
-    Wind wind_;
+    std::unique_ptr<Wind> wind_;
 };
 };

@@ -10,7 +10,9 @@ public:
         kForward,
         kBackward,
         kLeft,
-        kRight
+        kRight,
+        kUp,
+        kDown
     };
     Camera(glm::tvec3<tp::Real> pos, tp::Real yaw, tp::Real pitch);
 

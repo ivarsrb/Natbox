@@ -1,17 +1,40 @@
 #include "wind.h"
 #include <imgui/imgui.h>
 #include <engine/util/log.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include "config.h"
 
 using namespace engine;
 
 namespace app::study::grass {
-Wind::Wind() {
+Wind::Wind(renderer::RenderDevice &render_device) {
     Reset();
+    InitGeometry(render_device);
+}
+
+void Wind::InitGeometry(renderer::RenderDevice &render_device) {
+    // Wind vector geometry
+    std::vector<renderer::types::FPos> vertices;
+    vertices.push_back({glm::vec3(0.0,0.0,1.0)});
+    vertices.push_back({glm::vec3(0.1,0.0,0.0)});
+    vertices.push_back({glm::vec3(-0.1,0.0,0.0)});
+    std::vector<uint32_t> indices;
+    indices.emplace_back(0);
+    indices.emplace_back(1);
+    indices.emplace_back(2);
+    vector_mesh_.SetData(render_device, vertices, indices);
+    // Shader
+    std::string  vs_source = std::string(SHADER_PATH) + "wind.vert";
+    std::string  ps_source = std::string(SHADER_PATH) + "wind.frag";
+    std::vector<renderer::gl::Shader> shaders;
+    shaders.push_back(render_device.CreateVertexShader(vs_source));
+    shaders.push_back(render_device.CreatePixelShader(ps_source));
+    pipeline_ = std::make_unique<renderer::gl::Program>(render_device.CreatePipeline(shaders));
 }
 
 void Wind::Reset() {
     // Initial direction and strenth in cartesian coordinates system
-    tp::Vec3 c_initial_vector_ = tp::Vec3(1.0, 0.0, 0.0);
+    tp::Vec3 c_initial_vector_ = tp::Vec3(0.0, 0.0, 1.0);
     // Transform to spherical
     s_vector_.InitFromCartesian(c_initial_vector_); 
 }
@@ -43,6 +66,13 @@ tp::Vec3 Wind::CartesianVector() const {
     return s_vector_.GetCartesian();
 }
 
+void Wind::Render(engine::renderer::RenderDevice &render_device, renderer::gl::Buffer &uniform_buffer_scene, ShaderData &shader_data) {
+    shader_data.world_from_local = glm::rotate(glm::tmat4x4<tp::Real>(1.0), s_vector_.theta, util::math::kGroundNormal);
+    uniform_buffer_scene.SubData(offsetof(ShaderData, world_from_local), sizeof(ShaderData::world_from_local), &shader_data.world_from_local[0]);
+    pipeline_->Use();
+    vector_mesh_.Render(render_device);
+}
+
 // Render UI for tests and debugging
 // NOTE: actual rendering takes place after Render function, this only sets up what to render and how it reacts 
 void Wind::RenderGui() {
@@ -53,7 +83,7 @@ void Wind::RenderGui() {
     ImGui::SliderFloat("Speed ", &wind_speed, 0.0f, 5.0f);
     SetSpeed(wind_speed);
     float rot_angle = (float)s_vector_.theta;
-    ImGui::SliderFloat("Rotation (rad)", &rot_angle, 0.0f, 2*M_PI);
+    ImGui::SliderFloat("Rotation (rad)", &rot_angle, -M_PI, 2*M_PI);
     SetRotation(rot_angle);
     if (ImGui::Button(" Reset ")) {
        Reset();

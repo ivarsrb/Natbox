@@ -35,6 +35,12 @@ void Camera::ProcessKeyboard(Movement direction, tp::Real delta_time) {
     case kRight:
         position_ += right_ * velocity;
         break;
+    case kUp:
+        position_ += up_ * velocity;
+        break;
+    case kDown:
+        position_ -= up_ * velocity;
+        break;   
     }
 }
 

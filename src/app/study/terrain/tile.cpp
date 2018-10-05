@@ -3,7 +3,7 @@
 using namespace engine;
 
 namespace app::study::terrain {
-Tile::Tile(engine::renderer::RenderDevice &render_device, const uint32_t tile_size) {
+Tile::Tile(renderer::RenderDevice &render_device, const uint32_t tile_size) {
     Init(render_device, tile_size);
 }
 

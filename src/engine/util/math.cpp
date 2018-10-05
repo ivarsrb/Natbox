@@ -29,13 +29,18 @@ void SphericVector::InitFromCartesian(const tp::Vec3 &c_point, const AzimuthAxis
         default:
             break;
     }
-    assert(c_point.x != 0 || azimuth_value != 0);
     radius = glm::length(c_point);
-    theta = atan2(azimuth_value, c_point.x);
-    // Since atan2 return from 0 to and from -pi to 0, transform so that angle goes from 0 to 2*pi
-    theta = theta < 0 ? theta + 2*M_PI : theta;
-    assert(radius > 0);
-    phi = acos(inclination_value / radius);
+    if (radius > 0) {
+        //assert(c_point.x != 0 || azimuth_value != 0);
+        theta = atan2(c_point.x, azimuth_value);
+        // Since atan2 return from 0 to and from -pi to 0, transform so that angle goes from 0 to 2*pi
+        theta = theta < 0 ? theta + 2*M_PI : theta;
+        //assert(radius > 0);
+        phi = acos(inclination_value / radius);
+    } else {
+        theta = 0.0;
+        phi = 0.0;
+    }
 }
 
 // Convert spherical vector to cartesian vector
@@ -46,8 +51,8 @@ tp::Vec3 SphericVector::GetCartesian() const {
     // Value which will determine inclination (phi)
     tp::Real inclination_value = 0;
 
-    c_point.x = radius * cos(theta) * sin(phi);
-    azimuth_value = radius * sin(theta) * sin(phi);
+    c_point.x = radius * sin(theta) * sin(phi);
+    azimuth_value = radius * cos(theta) * sin(phi);
     inclination_value = radius * cos(phi);;
     
     switch (azimuth_axis_) {
