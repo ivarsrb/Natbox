@@ -12,11 +12,17 @@ GrassBlade::GrassBlade(renderer::RenderDevice &render_device ) {
 }
 
 void GrassBlade::Init(renderer::RenderDevice &render_device) {
-     std::vector<tp::Vec3> edges;
-   
+    std::vector<tp::Vec3> edges;
+   /*
     edges.push_back(tp::Vec3(0.0, 0.0, 0.0));
-    edges.push_back(tp::Vec3(0.0, 1.0, 0.0));
-    edges.push_back(tp::Vec3(0.0, 1.5, 0.5));
+    edges.push_back(tp::Vec3(0.0, 1.0, 0.3));
+    edges.push_back(tp::Vec3(0.0, 1.5, 0.7));
+    edges.push_back(tp::Vec3(0.0, 1.0, 2.5));
+    */
+
+    edges.push_back(tp::Vec3(0.0, 0.0, 0.0));
+    edges.push_back(tp::Vec3(0.0, 0.7, 0.7));
+    edges.push_back(tp::Vec3(0.0, 1.0, 1.5));
     edges.push_back(tp::Vec3(0.0, 1.0, 2.5));
 
     blade_ = std::make_unique<Plant>(edges);

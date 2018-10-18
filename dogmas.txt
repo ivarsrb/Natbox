@@ -1,4 +1,4 @@
 * Right-handed coordinate system with Y axis going up
-* Positive angle rotations are counter-clockwise when looking from perpendicular positive axis
+* Positive angle rotations are counter-clockwise when looking from positive axis of rotation
 * All models initially should face positive Z-axis (0 rotation angle about Y axis) and UP being positive Y-axis
 * 1 space unit is 1 meter

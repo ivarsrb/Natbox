@@ -32,4 +32,9 @@ private:
     // Wrap-around axis
     AzimuthAxis azimuth_axis_;
 };
+
+// Utility functions
+// Find given vectors projections vector onto XZ plane
+tp::Vec3 GetXZProj(const tp::Vec3 &vector);
+
 };

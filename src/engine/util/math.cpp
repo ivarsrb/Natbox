@@ -95,4 +95,10 @@ tp::Vec3 Math::SphericToCertesian(const SphericCoords &s_coord) {
 }
 */
 
+// Utility functions
+// Find given vectors projections vector onto XZ plane
+tp::Vec3 GetXZProj(const tp::Vec3 &vector) {
+    return tp::Vec3(vector.x, 0.0, vector.z);
+}
+
 };

@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 2.8.9)
+# Set c++ copiler to use
+# NOTE: this method to set variable here is not recomended (check CMAKE wiki "How do I use a different compiler?")
+set(CMAKE_CXX_COMPILER "g++-8")
 set(PROJ_NAME natbox)
 project(${PROJ_NAME})
 
@@ -48,7 +51,7 @@ find_package(glfw3 3.2 REQUIRED)
 #### Compile and link flags
 # -D _DEBUG is to define debug symbol to work like in Visual Studio
 # -D NDEBUG will disable assert()
-SET(GCC_COVERAGE_COMPILE_FLAGS "-g -Wall -D _DEBUG")
+SET(GCC_COVERAGE_COMPILE_FLAGS "-g -Wall -std=c++17 -D _DEBUG")
 SET(GCC_COVERAGE_LINK_FLAGS    "")
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
