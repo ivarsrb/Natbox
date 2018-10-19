@@ -99,11 +99,6 @@ tp::Vec3 Plant::Swing(tp::Real dt, const tp::Vec3 &wind) {
 
 // Perform bend action
 tp::Vec3 Plant::Bend(tp::Real dt, const tp::Vec3 &wind) {
-    static int iter = 0;
-
-    if(iter > 0)
-        return tp::Vec3(0.0);
-
     // Wind force
     tp::Vec3 wind_force_ = 1.0 * glm::dot(wind, normal_vec_) * normal_vec_;
     // Restoration force
@@ -122,14 +117,13 @@ tp::Vec3 Plant::Bend(tp::Real dt, const tp::Vec3 &wind) {
     angular_velocity_b_ += angular_accel * dt;
     
     tp::Vec3 dtheta = angular_velocity_b_ * dt;
-    util::Log::Write("torque  ",  glm::to_string(torque));
-    util::Log::Write("accel----- -------- ",  glm::to_string(angular_accel), "  ", dt );
-    util::Log::Write("vel ----- ",  glm::to_string(angular_velocity_b_));
-    util::Log::Write("dtheta ----- ",  glm::to_string(dtheta));
+    //util::Log::Write("torque  ",  glm::to_string(torque));
+    //util::Log::Write("accel----- -------- ",  glm::to_string(angular_accel), "  ", dt );
+    //util::Log::Write("vel ----- ",  glm::to_string(angular_velocity_b_));
+    //util::Log::Write("dtheta ----- ",  glm::to_string(dtheta));
     //angular_displacement_ += glm::length(dtheta)*(dtheta.y < 0.0 ? -1.0 : 1.0);
     //util::Log::Write("force-------- ",  glm::to_string(dtheta) );
     //util::Log::Write("Ang accel  ",  glm::to_string(angular_accel));
-    //iter++;
 
     return dtheta;
 }

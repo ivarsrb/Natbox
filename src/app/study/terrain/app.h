@@ -19,8 +19,8 @@ public:
     App(App const&) = delete;
     App operator=(App const&) = delete;
 private:
-    void Update(const engine::platform::IPlatformApp::Timing *time, const engine::platform::Input *input) override;
-    void Render(const engine::platform::IPlatformApp::Timing *time) override;
+    void Update(const engine::platform::Timer &timer, const engine::platform::Input &input) override;
+    void Render() override;
     void Resize(const glm::ivec2 &size) override;
     void KeyPress(const engine::platform::Input *input) override;
     void MouseMove(const engine::platform::Input *input) override;

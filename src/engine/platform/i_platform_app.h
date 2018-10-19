@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "input.h"
+#include "timer.h"
 
 namespace engine::platform {
 class IPlatformApp {
@@ -14,27 +15,21 @@ public:
         std::string win_title; 
         glm::ivec2 win_pos;
         // Weather gui is initialised upon initializing
-        bool use_gui;
-    };
-    // Application time data
-    struct Timing {
-        // Time since beginning of application
-        double elapsed;
-        // Time it took to render last frame
-        double delta;
-        // Used to store value for delta calculation
-        double last_frame;
+        bool use_gui = true;
+        // Weather frame rate is fixed to monitor refresh rate
+        bool fixed_fps = true;
+        // What should the fixed interval between simulation updates in seconds
+        tp::Real fixed_time_step = (1 / 60.);
     };
     IPlatformApp(const Configuration& config);
     virtual ~IPlatformApp();
     void Run();
 protected:
-    // Window size
-    glm::ivec2 window_size_;
-    bool use_gui_;
+    Configuration configuration;
 private:
-    virtual void Update(const Timing *time, const Input *input) = 0;
-    virtual void Render(const Timing *time) = 0;
+    virtual void Update(const Timer &timer, const Input &input) = 0;
+    virtual void Render() = 0;
+    virtual void RenderGUI(const Timer &timer) = 0;
     virtual void Resize(const glm::ivec2 &size) = 0;
     virtual void KeyPress(const Input *input) = 0;
     virtual void MouseMove(const Input *input) = 0;
@@ -51,11 +46,7 @@ private:
     void LoadOpenGL();
     // Context window
     GLFWwindow* context_;
-    // Window title
-    std::string title_;
-    // Time values for application
-    Timing time_;
-    // Input data
     Input input_;
+    Timer timer_;
 };
 }; // platform

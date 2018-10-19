@@ -11,7 +11,9 @@ namespace app::study::grass {
 App::App() : IPlatformApp( { glm::ivec2(WIN_WIDTH, WIN_HEIGHT),
                                                  WIN_TITLE,
                                                  glm::ivec2(WIN_POS_X, WIN_POS_Y),
-                                                 USE_GUI } )
+                                                 USE_GUI, 
+                                                 FIXED_FPS, 
+                                                 FIXED_DT } )
 {
     loading_clock_.SetTime1();
     Init();
@@ -28,7 +30,7 @@ void App::Init() {
     // Opengl state
     render_device_.SetRasterState(renderer::RenderDevice::RasterState::kNoCullSolid);
     // View port
-    render_device_.SetViewport(glm::ivec2(0, 0), IPlatformApp::window_size_);
+    render_device_.SetViewport(glm::ivec2(0, 0), IPlatformApp::configuration.win_size);
     
     camera_ = std::make_unique<core::Camera>(tp::Vec3(0.0, 0.0, -5.0), (tp::Real)180.0f, (tp::Real)0.0f);
     camera_->SetSpeed(1.4);
@@ -38,7 +40,7 @@ void App::Init() {
     // Uniforms
     uniform_buffer_scene_ = std::make_unique<renderer::gl::Buffer>(render_device_.CreateUniformBuffer(sizeof(ShaderData), renderer::RenderDevice::UniformBufferBindingPoint::kScene));
     // Update uniform buffer data
-    shader_data_.projection_from_view = glm::perspective(glm::radians(camera_->GetFOV()), IPlatformApp::window_size_.x / (tp::Real)IPlatformApp::window_size_.y, z_near_, z_far_);
+    shader_data_.projection_from_view = glm::perspective(glm::radians(camera_->GetFOV()), IPlatformApp::configuration.win_size.x / (tp::Real)IPlatformApp::configuration.win_size.y, z_near_, z_far_);
     uniform_buffer_scene_->SubData(offsetof(ShaderData, projection_from_view), sizeof(ShaderData::projection_from_view), &shader_data_.projection_from_view[0]);
 
     // Shader
@@ -56,26 +58,27 @@ void App::Init() {
     wind_ = std::make_unique<Wind>(render_device_);
 }
 
-void App::Update(const platform::IPlatformApp::Timing *time, const platform::Input *input) {
+void App::Update(const platform::Timer &timer, const platform::Input &input) {
+    tp::Real dt = timer.VirtualDt();
     // Camera controls using active keys (keys neing currently held)
-    if (input->keyboard.active[platform::Input::Key::kW])
-        camera_->ProcessKeyboard(core::Camera::kForward, (tp::Real)time->delta);
-    if (input->keyboard.active[platform::Input::Key::kS])
-        camera_->ProcessKeyboard(core::Camera::kBackward, (tp::Real)time->delta);
-    if (input->keyboard.active[platform::Input::Key::kA])
-        camera_->ProcessKeyboard(core::Camera::kLeft, (tp::Real)time->delta);
-    if (input->keyboard.active[platform::Input::Key::kD])
-        camera_->ProcessKeyboard(core::Camera::kRight, (tp::Real)time->delta);
-    if (input->keyboard.active[platform::Input::Key::kR])
-        camera_->ProcessKeyboard(core::Camera::kUp, (tp::Real)time->delta);
-    if (input->keyboard.active[platform::Input::Key::kF])
-        camera_->ProcessKeyboard(core::Camera::kDown, (tp::Real)time->delta);
+    if (input.keyboard.active[platform::Input::Key::kW])
+        camera_->ProcessKeyboard(core::Camera::kForward, dt);
+    if (input.keyboard.active[platform::Input::Key::kS])
+        camera_->ProcessKeyboard(core::Camera::kBackward, dt);
+    if (input.keyboard.active[platform::Input::Key::kA])
+        camera_->ProcessKeyboard(core::Camera::kLeft, dt);
+    if (input.keyboard.active[platform::Input::Key::kD])
+        camera_->ProcessKeyboard(core::Camera::kRight, dt);
+    if (input.keyboard.active[platform::Input::Key::kR])
+        camera_->ProcessKeyboard(core::Camera::kUp, dt);
+    if (input.keyboard.active[platform::Input::Key::kF])
+        camera_->ProcessKeyboard(core::Camera::kDown, dt);
 
-    wind_->Update((tp::Real)time->delta);
-    grass_blade_->Update((tp::Real)time->delta, *wind_);
+    wind_->Update(dt);
+    grass_blade_->Update(dt, *wind_);
 }
 
-void App::Render(const platform::IPlatformApp::Timing *time) {
+void App::Render() {
     render_device_.Clear(renderer::RenderDevice::ClearBuffer::kColorDepth);
     // Transforms
     shader_data_.view_from_world = camera_->GetViewMatrix();
@@ -83,19 +86,20 @@ void App::Render(const platform::IPlatformApp::Timing *time) {
     pipeline_->Use();
     grass_blade_->Render(render_device_, *uniform_buffer_scene_, shader_data_, tp::Vec3(0.0, 0.0, 0.0));
     wind_->Render(render_device_,*uniform_buffer_scene_, shader_data_);
-
-    if (USE_GUI) {
-        RenderGui();
-    }
 }
-// Render UI for tests and debugging
+
 // NOTE: actual rendering takes place after Render function, this only sets up what to render and how it reacts 
-void App::RenderGui() {
+void App::RenderGUI(const platform::Timer &timer) {
     ImGui::Text("Loading stats");
     ImGui::Text("Scene loading time (ms): %lu", loading_clock_.GetDuration());
     ImGui::Separator();
+    ImGui::Text("Timer stats");
+    ImGui::Text("Real time %.3f, virtual %.3f, diff %.3f", timer.RealTime(), timer.VirtualTime(), timer.RealTime() - timer.VirtualTime());
+    ImGui::Text("Real dt %.3f, virtual dt %.3f, FPS %.3f", timer.RealDt(), timer.VirtualDt(), (1 / timer.RealDt()));
+    ImGui::Text("Updates per frame %u, accum %.4f", timer.updates_per_frame, timer.VirtualAccum());
+    ImGui::Separator();
     ImGui::Text("Frame stats");
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    //ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     ImGui::Text("Drawcals: %d, primitives: %d", render_device_.render_stats.num_drawcalls_per_frame, render_device_.render_stats.num_primitives_per_frame);
     ImGui::Separator();
     ImGui::Text("Render options");
@@ -120,10 +124,10 @@ void App::RenderGui() {
 
 void App::Resize(const glm::ivec2 &size) {
     // height will be significantly larger than specified on retina displays.
-    IPlatformApp::window_size_ = size;
-    render_device_.SetViewport(glm::ivec2(0, 0), IPlatformApp::window_size_);
+    IPlatformApp::configuration.win_size = size;
+    render_device_.SetViewport(glm::ivec2(0, 0), IPlatformApp::configuration.win_size);
     // Update uniform buffer data
-    shader_data_.projection_from_view = glm::perspective(glm::radians(camera_->GetFOV()), IPlatformApp::window_size_.x / (tp::Real)IPlatformApp::window_size_.y, z_near_, z_far_);
+    shader_data_.projection_from_view = glm::perspective(glm::radians(camera_->GetFOV()), IPlatformApp::configuration.win_size.x / (tp::Real)IPlatformApp::configuration.win_size.y, z_near_, z_far_);
     uniform_buffer_scene_->SubData(offsetof(ShaderData, projection_from_view), sizeof(ShaderData::projection_from_view), &shader_data_.projection_from_view[0]);
 }
 
@@ -145,7 +149,7 @@ void App::MouseScroll(const platform::Input *input) {
     if (input->mouse.cursor_disabled) {
         camera_->ProcessMouseScroll(input->mouse.scroll_offset.y);
         // Update uniform buffer data
-        shader_data_.projection_from_view = glm::perspective(glm::radians(camera_->GetFOV()), IPlatformApp::window_size_.x / (tp::Real)IPlatformApp::window_size_.y, z_near_, z_far_);
+        shader_data_.projection_from_view = glm::perspective(glm::radians(camera_->GetFOV()), IPlatformApp::configuration.win_size.x / (tp::Real)IPlatformApp::configuration.win_size.y, z_near_, z_far_);
         uniform_buffer_scene_->SubData(offsetof(ShaderData, projection_from_view), sizeof(ShaderData::projection_from_view), &shader_data_.projection_from_view[0]);
     }
 }

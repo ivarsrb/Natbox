@@ -19,15 +19,15 @@ public:
     App(App const&) = delete;
     App operator=(App const&) = delete;
 private:
-    void Update(const engine::platform::IPlatformApp::Timing *time, const engine::platform::Input *input) override;
-    void Render(const engine::platform::IPlatformApp::Timing *time) override;
+    void Update(const engine::platform::Timer &timer, const engine::platform::Input &input) override;
+    void Render() override;
+    void RenderGUI(const engine::platform::Timer &timer) override;
     void Resize(const glm::ivec2 &size) override;
     void KeyPress(const engine::platform::Input *input) override;
     void MouseMove(const engine::platform::Input *input) override;
     void MouseButtonPress(const engine::platform::Input *input) override;
     void MouseScroll(const engine::platform::Input *input) override;
     void Init();
-    void RenderGui();
     engine::util::Timing loading_clock_;
     engine::renderer::RenderDevice render_device_;
     std::unique_ptr<engine::core::Camera> camera_;

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <exception>
 #include <memory>
-#include "app/study/terrain/app.h"
+//#include "app/study/terrain/app.h"
 #include "app/study/grass/app.h"
 
 int main(int argc, char *argv[]) {
@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     try {  
         std::unique_ptr<engine::platform::IPlatformApp> app;
         if (app_type == "terrain") {
-            app = std::make_unique<app::study::terrain::App>();
+            //app = std::make_unique<app::study::terrain::App>();
         } else if (app_type == "grass") { 
             app = std::make_unique<app::study::grass::App>();
         } else {

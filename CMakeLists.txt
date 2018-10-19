@@ -21,6 +21,7 @@ set(SOURCES
             ${SOURCE_DIR}/engine/platform/debug.cpp
             ${SOURCE_DIR}/engine/platform/i_platform_app.cpp
             ${SOURCE_DIR}/engine/platform/input.cpp
+            ${SOURCE_DIR}/engine/platform/timer.cpp
             ${SOURCE_DIR}/engine/renderer/image.cpp
             ${SOURCE_DIR}/engine/renderer/render_device.cpp
             ${SOURCE_DIR}/engine/renderer/mesh.cpp
@@ -33,9 +34,9 @@ set(SOURCES
             ${SOURCE_DIR}/engine/util/timing.cpp
             ${SOURCE_DIR}/engine/util/math.cpp
 
-            ${SOURCE_DIR}/app/study/terrain/app.cpp
-            ${SOURCE_DIR}/app/study/terrain/terrain.cpp
-            ${SOURCE_DIR}/app/study/terrain/tile.cpp  
+            #${SOURCE_DIR}/app/study/terrain/app.cpp
+            #${SOURCE_DIR}/app/study/terrain/terrain.cpp
+            #${SOURCE_DIR}/app/study/terrain/tile.cpp  
 
             ${SOURCE_DIR}/app/study/grass/app.cpp
             ${SOURCE_DIR}/app/study/grass/plant_node.cpp
