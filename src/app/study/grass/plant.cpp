@@ -13,7 +13,7 @@ namespace app::study::grass {
 // NOTE: First point of edges array should always be a root of a plant and store 4 edges
 Plant::Plant(const std::vector<tp::Vec3> &edges): static_edges_(edges) {
     assert(static_edges_.size() == 4);
-    growth_static_vec_ = static_edges_.at(3) - static_edges_.at(0);
+    growth_static_vec_ = static_edges_.back() - static_edges_.front();
     GetNormalSideVectors(growth_static_vec_,normal_static_vec_,side_static_vec_);
     //util::Log::Write("Plant growth vec: ",glm::to_string(growth_static_vec_), ", normal ", glm::to_string(normal_static_vec_) ,", side ", glm::to_string(side_static_vec_));
     Reset();
@@ -23,12 +23,12 @@ Plant::Plant(const std::vector<tp::Vec3> &edges): static_edges_(edges) {
     stiffness_.push_back(3);
     stiffness_.push_back(2.0);
     // mass of a blade
-    mass_ = 0.001;
+    mass_ = 0.01;
 }
 
 // Set all edges and nodes to it's original shape
 void Plant::Reset() {
-    util::Log::Write("Reset plant");
+    //util::Log::Write("Reset plant");
     edges_ = static_edges_;
     growth_vec_ = growth_static_vec_;
     normal_vec_ = normal_static_vec_;
@@ -73,8 +73,7 @@ tp::Vec3 Plant::Swing(tp::Real dt, const tp::Vec3 &wind) {
     // Restoration force
     tp::Vec3 restore_force_swing_(0,0,0);
     if (growth_proj_static_vec != growth_proj_vec) {
-        restore_force_swing_ = stiffness_.back() * glm::angle(glm::normalize(growth_proj_static_vec), glm::normalize(growth_proj_vec))/* abs(angular_displacement_)*/* glm::normalize(growth_proj_static_vec - growth_proj_vec);                          
-        //util::Log::Write("Restoration force swing: ", glm::to_string(restore_force_swing_));
+        restore_force_swing_ = stiffness_.back() * glm::angle(glm::normalize(growth_proj_static_vec), glm::normalize(growth_proj_vec)) * glm::normalize(growth_proj_static_vec - growth_proj_vec);
     }
     // To damp down swinging when wind stops
     //angular_velocity_s_ += -0.9 * dt * angular_velocity_s_;
@@ -107,7 +106,7 @@ tp::Vec3 Plant::Bend(tp::Real dt, const tp::Vec3 &wind) {
         restore_force_ = stiffness_.back() * glm::angle(glm::normalize(growth_static_vec_), glm::normalize(growth_vec_)) * glm::normalize(growth_static_vec_ - growth_vec_);                          
     }
     // To damp down swinging when wind stops
-    //angular_velocity_b_ += -0.9 * dt * angular_velocity_b_;
+    //angular_velocity_b_ += -1.5 * dt * angular_velocity_b_;
     // Full force acting on plant
     tp::Vec3 full_force_ = wind_force_ + restore_force_ ;
 
@@ -130,34 +129,43 @@ tp::Vec3 Plant::Bend(tp::Real dt, const tp::Vec3 &wind) {
 
 // Animate nodes and calculate new edge points of a plant one by one starting at first after the root
 void Plant::Update(tp::Real dt, const tp::Vec3 &wind) {
+
+/////////////////////////////////////////////////////////////////////
+
     tp::Vec3 dtheta_b = Bend(dt, wind);
     uint32_t counter = 0;
     tp::Real tip_dtheta = glm::length(dtheta_b);
     tp::Vec3 rot_axis = glm::normalize(dtheta_b);
     for (auto& edge : edges_) {
         if (tip_dtheta != 0.0 && counter > 0) {
-            //tp::Real current_dtheta = (stiffness_.back() / stiffness_.at(counter)) * tip_dtheta;
+            tp::Real current_dtheta = (stiffness_.back() / stiffness_.at(counter)) * tip_dtheta;
             edge = glm::rotate(edge, tip_dtheta, rot_axis);
         }
         ++counter;
     }
 
-    /*
-    tp::Vec3 dtheta_s = Swing(dt, wind);
-    // Rotate edges
-    uint32_t counter = 0;
-    tp::Real tip_dtheta = glm::length(dtheta_s);
-    tp::Vec3 rot_axis = glm::normalize(dtheta_s);
-    for (auto& edge : edges_) {
-        if (tip_dtheta != 0.0 && counter > 0) {
-            tp::Real current_dtheta = (stiffness_.back() / stiffness_.at(counter)) * tip_dtheta;
-            edge = glm::rotate(edge, current_dtheta, rot_axis);
-        }
-        ++counter;
-    }*/
+    growth_vec_ = edges_.back() - edges_.front();
+    GetNormalSideVectors(growth_vec_, normal_vec_, side_vec_);
 
-    growth_vec_ = edges_.at(3) - edges_.at(0);
-    GetNormalSideVectors(growth_vec_,normal_vec_,side_vec_);
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    tp::Vec3 dtheta_s = Swing(dt, wind);
+    uint32_t counter_s = 0;
+    tp::Real tip_dtheta_s = glm::length(dtheta_s);
+    tp::Vec3 rot_axis_s = glm::normalize(dtheta_s);
+    for (auto& edge : edges_) {
+        if (tip_dtheta_s != 0.0 && counter_s > 0) {
+            tp::Real current_dtheta = (stiffness_.back() / stiffness_.at(counter_s)) * tip_dtheta_s;
+            edge = glm::rotate(edge, tip_dtheta_s, rot_axis_s);
+        }
+        ++counter_s;
+    }
+
+    growth_vec_ = edges_.back() - edges_.front();
+    GetNormalSideVectors(growth_vec_, normal_vec_, side_vec_);
+
+
+
 /*
     // Since first edge of a plant is root, it always remains the same and we dont update it
     uint32_t edge_num = 1;

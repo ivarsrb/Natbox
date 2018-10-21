@@ -25,6 +25,12 @@ void GrassBlade::Init(renderer::RenderDevice &render_device) {
     edges.push_back(tp::Vec3(0.0, 1.0, 1.5));
     edges.push_back(tp::Vec3(0.0, 1.0, 2.5));
 
+/*
+    edges.push_back(tp::Vec3(0.0, 0.0, 0.0));
+    edges.push_back(tp::Vec3(0.0, 0.7, 0.7));
+    edges.push_back(tp::Vec3(0.1, 1.0, 1.5));
+    edges.push_back(tp::Vec3(0.4, 1.0, 2.5));
+*/
     blade_ = std::make_unique<Plant>(edges);
     // Vertices set tu dummy
     vertices_.resize(edges.size());

@@ -20,7 +20,7 @@ void Timer::Update() {
     real_time_ = new_time;
     virtual_accumulator_ += real_dt_;
     // For statistic
-    std::cout << updates_per_frame << std::endl;
+    //std::cout << updates_per_frame << std::endl;
     updates_per_frame = 0;
 }
 // Ised to check if simulation update is going to happen

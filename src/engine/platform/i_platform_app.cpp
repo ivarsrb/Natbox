@@ -80,6 +80,7 @@ IPlatformApp::~IPlatformApp() {
 }
 
 // Application main loop
+// TODO: intewrpolation should take place in rendering current state so animations appear smoother
 void IPlatformApp::Run() {
     timer_.Reset();
     while (!glfwWindowShouldClose(context_)) {

@@ -80,7 +80,7 @@ void Wind::RenderGui() {
     tp::Vec3 c_vector = CartesianVector();
     ImGui::Text("Vector: x  %0.2f, y %0.2f, z %0.2f", c_vector.x, c_vector.y, c_vector.z);
     float wind_speed = (float)s_vector_.radius;
-    ImGui::SliderFloat("Speed ", &wind_speed, 0.0f, 5.0f);
+    ImGui::SliderFloat("Speed ", &wind_speed, 0.0f, 15.0f);
     SetSpeed(wind_speed);
     float rot_angle = (float)s_vector_.theta;
     ImGui::SliderFloat("Rotation (rad)", &rot_angle, -M_PI, 2*M_PI);
