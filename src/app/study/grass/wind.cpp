@@ -61,10 +61,12 @@ void Wind::SetRotation(engine::tp::Real angle) {
     s_vector_.theta = angle;
 }
 
-// Curent wind vector in cartesian space
-tp::Vec3 Wind::CartesianVector() const {
+// Get wind vector in given position
+engine::tp::Vec3 Wind::VectorInPosition(const tp::Vec3 &pos) const {
+    // TODO add position sampling here
     return s_vector_.GetCartesian();
 }
+
 
 void Wind::Render(engine::renderer::RenderDevice &render_device, renderer::gl::Buffer &uniform_buffer_scene, ShaderData &shader_data) {
     shader_data.world_from_local = glm::rotate(glm::tmat4x4<tp::Real>(1.0), s_vector_.theta, util::math::kGroundNormal);
@@ -77,7 +79,7 @@ void Wind::Render(engine::renderer::RenderDevice &render_device, renderer::gl::B
 // NOTE: actual rendering takes place after Render function, this only sets up what to render and how it reacts 
 void Wind::RenderGui() {
     ImGui::Begin("Wind");
-    tp::Vec3 c_vector = CartesianVector();
+    tp::Vec3 c_vector = VectorInPosition(tp::Vec3(0.0));
     ImGui::Text("Vector: x  %0.2f, y %0.2f, z %0.2f", c_vector.x, c_vector.y, c_vector.z);
     float wind_speed = (float)s_vector_.radius;
     ImGui::SliderFloat("Speed ", &wind_speed, 0.0f, 15.0f);

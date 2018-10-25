@@ -50,7 +50,7 @@ void GrassBlade::Init(renderer::RenderDevice &render_device) {
 }
 
 void GrassBlade::Update(engine::tp::Real dt, const Wind &wind) {
-    blade_->Update(dt, wind.CartesianVector());
+    blade_->Update(dt, wind.VectorInPosition(tp::Vec3(0.0)));
 }
 
 void GrassBlade::Render(renderer::RenderDevice &render_device, renderer::gl::Buffer &uniform_buffer_scene, ShaderData &shader_data, 

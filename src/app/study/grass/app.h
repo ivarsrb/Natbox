@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <memory>
+#include <optional>
 #include <glm/glm.hpp>
 #include <engine/platform/i_platform_app.h>
 #include <engine/renderer/render_device.h>
@@ -8,8 +8,8 @@
 #include <engine/core/types.h>
 #include <engine/util/timing.h>
 #include "types.h"
-#include "grass_blade.h"
 #include "wind.h"
+#include "grass.h"
 
 namespace app::study::grass {
 class App : public engine::platform::IPlatformApp {
@@ -30,13 +30,12 @@ private:
     void Init();
     engine::util::Timing loading_clock_;
     engine::renderer::RenderDevice render_device_;
-    std::unique_ptr<engine::core::Camera> camera_;
+    std::optional<engine::core::Camera> camera_;
     ShaderData shader_data_;
-    std::unique_ptr<engine::renderer::gl::Buffer> uniform_buffer_scene_;
+    std::optional<engine::renderer::gl::Buffer> uniform_buffer_scene_;
     engine::tp::Real z_near_;
     engine::tp::Real z_far_;
-    std::unique_ptr<engine::renderer::gl::Program> pipeline_;
-    std::unique_ptr<GrassBlade> grass_blade_;
-    std::unique_ptr<Wind> wind_;
+    std::optional<Wind> wind_;
+    std::optional<Grass> grass_;
 };
 };

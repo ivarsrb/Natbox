@@ -27,3 +27,8 @@ a) Create study app to test certain aspect of some rendering.
 b) Think weather some part can be universalized and included into engine.
 c) Add what is learned to the main application (fully functional rendering system) 
 
+* Dependencies
+- C++17 compiler
+- OpenGL 4.5 drivers
+- glfw3 lib
+- glm lib

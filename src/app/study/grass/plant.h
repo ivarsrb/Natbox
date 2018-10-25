@@ -5,7 +5,6 @@
 //#include "plant_node.h"
 
 namespace app::study::grass {
-
 class Plant {
 public:
     Plant(const std::vector<engine::tp::Vec3> &edges);

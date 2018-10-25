@@ -34,6 +34,8 @@ private:
 };
 
 // Utility functions
+// Use glm function to normalize, but return 0 vector if given vector is zero
+tp::Vec3 NormalizeSafe(const tp::Vec3 &vector);
 // Find given vectors projections vector onto XZ plane
 tp::Vec3 GetXZProj(const tp::Vec3 &vector);
 

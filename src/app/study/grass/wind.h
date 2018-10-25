@@ -16,7 +16,7 @@ public:
     void SetRotation(engine::tp::Real angle);
     void Render(engine::renderer::RenderDevice &render_device, engine::renderer::gl::Buffer &uniform_buffer_scene, ShaderData &shader_data);
     void RenderGui();
-    engine::tp::Vec3 CartesianVector() const;
+    engine::tp::Vec3 VectorInPosition(const engine::tp::Vec3 &pos) const;
 private:
     // Radius is strength of wind, theta rotates it around y axis
     engine::util::math::SphericVector s_vector_;

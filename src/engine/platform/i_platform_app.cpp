@@ -87,6 +87,8 @@ void IPlatformApp::Run() {
         glfwPollEvents();
         timer_.Update();
         while (timer_.ShouldUpdateVirtual()) {
+            // Update is made with fixed timestep (compared to render with varying)
+            // NOTE: Sometimes update skips, sometimes is called mutiple times in loop compared to Render()
             Update(timer_, input_);
             timer_.UpdateVirtual();
         }
