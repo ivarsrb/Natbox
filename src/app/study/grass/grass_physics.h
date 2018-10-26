@@ -25,14 +25,19 @@ public:
     const std::vector<EdgeProperties>& CurrentEdges() const;
     void Update(engine::tp::Real dt, const engine::tp::Vec3 &wind_vec);
 private:
-    // Properties of a grass entity itself
-    struct Properties {
+    // Orientation of grass blade
+    struct Orientation {
         // Vector from root to tip edge
         engine::tp::Vec3 growth_vec;
         // normal vector to growth vector
         engine::tp::Vec3 normal_vec;
         // Perpendicular to growth and normal
         engine::tp::Vec3 side_vec;
+    };
+    // Properties of a grass entity itself
+    struct Properties {
+        // Static vectors of a blade
+        Orientation orientation;
         // Total mass of a entity (kg)
         engine::tp::Real mass;
         // Surface area (m)
@@ -42,6 +47,8 @@ private:
     };
     // Data about given motion of a grass in wind force
     struct MotionData {
+        // Dynamic vectors of a blade in given motion
+        Orientation orientation;
         // Velocity accumulates over simulation process
         engine::tp::Vec3 angular_velocity;
         // Angle by whitch current motion rotates grass entity from it's static position
@@ -55,7 +62,8 @@ private:
     // Calculate set of fixed properties from edge data
     void CalcFixedProperties(Properties &props, const std::vector<EdgeProperties> &edges);
     // Calculate growth normal and side vectors from given edges
-    void CalcSimVectors(Properties &props, const std::vector<EdgeProperties> &edges);
+    void CalcSimVectors(Orientation &orient, const std::vector<EdgeProperties> &edges);
+    // Calculatate independent motions
     Rotation SwingMotion(engine::tp::Real dt, const engine::tp::Vec3 &wind_vec);
     Rotation BendMotion(engine::tp::Real dt, const engine::tp::Vec3 &wind_vec);
     // Static variables are initial data of a grass entity and does not change
@@ -64,7 +72,6 @@ private:
     std::vector<EdgeProperties> edges_static_;
     // Grass entity itself
     Properties props_;
-    Properties props_static_;
     // Motions
     MotionData swing_;
     MotionData bend_;
