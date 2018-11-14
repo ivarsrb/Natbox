@@ -9,7 +9,7 @@
 #include <engine/util/timing.h>
 #include "types.h"
 #include "wind.h"
-#include "grass.h"
+#include "collection.h"
 
 namespace app::study::grass {
 class App : public engine::platform::IPlatformApp {
@@ -29,13 +29,13 @@ private:
     void MouseScroll(const engine::platform::Input *input) override;
     void Init();
     engine::util::Timing loading_clock_;
-    engine::renderer::RenderDevice render_device_;
-    std::optional<engine::core::Camera> camera_;
-    ShaderData shader_data_;
-    std::optional<engine::renderer::gl::Buffer> uniform_buffer_scene_;
+    engine::core::Camera camera_;
     engine::tp::Real z_near_;
     engine::tp::Real z_far_;
-    std::optional<Wind> wind_;
-    std::optional<Grass> grass_;
+    ShaderData shader_data_;
+    engine::renderer::RenderDevice render_device_;
+    engine::renderer::gl::Buffer uniform_buffer_scene_;
+    Collection grass_;
+    Wind wind_;
 };
 };

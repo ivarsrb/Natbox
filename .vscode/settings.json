@@ -45,7 +45,10 @@
         "list": "cpp",
         "codecvt": "cpp",
         "complex": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "forward_list": "cpp",
+        "numeric": "cpp",
+        "valarray": "cpp"
     },
     "debug.openExplorerOnEnd": true,
     "workbench.editor.enablePreview": false,

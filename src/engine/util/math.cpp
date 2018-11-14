@@ -3,7 +3,8 @@
 #include <cassert>
 #include <iostream>
 #include <glm/glm.hpp>
-//#define GLM_ENABLE_EXPERIMENTAL
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/rotate_vector.hpp>
 //#include <glm/gtx/vector_angle.hpp>
 //#include <glm/gtx/polar_coordinates.hpp>
 //#include <glm/gtx/string_cast.hpp>
@@ -76,7 +77,10 @@ tp::Vec3 SphericVector::GetCartesian() const {
 tp::Vec3 NormalizeSafe(const tp::Vec3 &vector) {
     return (glm::length(vector) ? glm::normalize(vector) : vector);
 }
-
+// If axis is 0 return the same point, without this rotation would be - nan
+tp::Vec3 RotateSafe(const tp::Vec3 &point, const tp::Real angle, const tp::Vec3 &axis) {
+    return (glm::length(axis) ? glm::rotate(point, angle, axis) : point);
+}
 
 // Find given vectors projections vector onto XZ plane
 tp::Vec3 GetXZProj(const tp::Vec3 &vector) {

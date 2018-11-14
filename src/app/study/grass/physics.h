@@ -4,9 +4,15 @@
 
 namespace app::study::grass {
 // Simulation of animation of grass edges in dynamic wind force
-class GrassPhysics {
+// Bsed on paper "A simulation on grass swaying with dynamic wind force" (2016)
+// TODO: 
+// * add twisting motion
+// * In bending motion need to make bended grass straighten out in strong wind (now it bends further)
+//    to do that divide edges of grass in two groups depending on angle, then propagate 
+//    motion accordingly
+class Physics {
 public:
-    struct EdgeProperties {
+    struct Edge {
         // Properties of each edge for simulation
         // Usually edge property means also property of a section from previous
         //  edge to this edge
@@ -19,10 +25,10 @@ public:
         // Mass of section up to this edge in kg
         engine::tp::Real mass;
     };
-    GrassPhysics(const std::vector<EdgeProperties> &edges);
+    Physics(const std::vector<Edge> &edges);
     void Reset();
     // Return currently modified edges
-    const std::vector<EdgeProperties>& CurrentEdges() const;
+    const std::vector<Edge>& GetTransformedEdges() const;
     void Update(engine::tp::Real dt, const engine::tp::Vec3 &wind_vec);
 private:
     // Orientation of grass blade
@@ -46,7 +52,7 @@ private:
         engine::tp::Real drag_coeff;
     };
     // Data about given motion of a grass in wind force
-    struct MotionData {
+    struct Motion {
         // Dynamic vectors of a blade in given motion
         Orientation orientation;
         // Velocity accumulates over simulation process
@@ -59,21 +65,21 @@ private:
         engine::tp::Vec3 axis;
         engine::tp::Real angle;
     };
-    // Calculate set of fixed properties from edge data
-    void CalcFixedProperties(Properties &props, const std::vector<EdgeProperties> &edges);
-    // Calculate growth normal and side vectors from given edges
-    void CalcSimVectors(Orientation &orient, const std::vector<EdgeProperties> &edges);
+    // Calculate and return set of fixed properties from edge data
+    void GetPropertiesFromEdges(Properties &props, const std::vector<Edge> &edges);
+    // Calculate and return growth normal and side vectors from given edges
+    void GetOrientationFromEdges(Orientation &orient, const std::vector<Edge> &edges);
     // Calculatate independent motions
-    Rotation SwingMotion(engine::tp::Real dt, const engine::tp::Vec3 &wind_vec);
-    Rotation BendMotion(engine::tp::Real dt, const engine::tp::Vec3 &wind_vec);
+    Rotation Swing(engine::tp::Real dt, const engine::tp::Vec3 &wind_vec);
+    Rotation Bend(engine::tp::Real dt, const engine::tp::Vec3 &wind_vec);
     // Static variables are initial data of a grass entity and does not change
     // Edges
-    std::vector<EdgeProperties> edges_;
-    std::vector<EdgeProperties> edges_static_;
+    std::vector<Edge> edges_;
+    std::vector<Edge> edges_static_;
     // Grass entity itself
     Properties props_;
     // Motions
-    MotionData swing_;
-    MotionData bend_;
+    Motion swing_;
+    Motion bend_;
 };
 }; // grass

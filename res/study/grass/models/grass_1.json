@@ -1,0 +1,34 @@
+{
+    "edges": [
+        {
+            "position": [0.0, 0.0, 0.0],
+            "stiffness": null,
+            "mass": 0.0,
+            "width": 0.0
+
+        },
+        {
+            "position": [0.0, 0.7, 0.7],
+            "stiffness": 10.0,
+            "mass": 0.0033,
+            "width": 0.1
+
+        },
+        {
+            "position": [0.0, 1.0, 1.5],
+            "stiffness": 7.0,
+            "mass": 0.0033,
+            "width": 0.1
+
+        },
+        {
+            "position": [0.0, 1.0, 2.5],
+            "stiffness": 4.0,
+            "mass": 0.0033,
+            "width": 0.1
+
+        }
+
+    ]
+}
+

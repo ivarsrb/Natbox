@@ -102,7 +102,7 @@ gl::VertexArray RenderDevice::CreateVertexArray(const std::vector<gl::Buffer>& v
         // By default set all attributes to fech data from buffer bound to 0 slot
         // vertex_array.AttribBinding(attribute_index, 0);
     }
-    // By default set all attributes to fech data from uffer bound to 0 slot
+    // By default set all attributes to fech data from buffer bound to 0 slot
     BindVertexArrayAttributes(vertex_array, vertex_attributes, 0);
     return vertex_array;
 }

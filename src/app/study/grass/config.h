@@ -12,5 +12,5 @@
 // At what fixed interval simulation is updated (render dt is varying)
 #define FIXED_DT (1/60.)
 // PATHES
-#define RES_PATH "res/study/"
+#define MODELS_PATH "res/study/grass/models/"
 #define SHADER_PATH "shaders/study/grass/"

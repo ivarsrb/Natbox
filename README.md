@@ -19,13 +19,17 @@ Consists of several modules but all have the same purpose - to assist applicatio
 - elements - 
 
 * Available apps (set as first command line argument wwhen running program)
-- terrain
 - grass
 
 * Development process
 a) Create study app to test certain aspect of some rendering.
 b) Think weather some part can be universalized and included into engine.
 c) Add what is learned to the main application (fully functional rendering system) 
+
+* Right-handed coordinate system with Y axis going up
+- Positive angle rotations are counter-clockwise when looking from positive axis of rotation
+- All models initially should face positive Z-axis (0 rotation angle about Y axis) and UP being positive Y-axis
+- 1 space unit is 1 meter
 
 * Dependencies
 - C++17 compiler

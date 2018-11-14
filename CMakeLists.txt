@@ -12,10 +12,12 @@ set(SOURCE_DIR src)
 set(SOURCES 
             ${SOURCE_DIR}/main.cpp 
             
+            # external compilable libraries
             ${SOURCE_DIR}/external/glad/glad.c
             ${SOURCE_DIR}/external/imgui/imgui.cpp
             ${SOURCE_DIR}/external/imgui/imgui_draw.cpp
 
+            # engine source
             ${SOURCE_DIR}/engine/core/camera.cpp
             ${SOURCE_DIR}/engine/platform/gui/imgui_impl_glfw_gl3.cpp
             ${SOURCE_DIR}/engine/platform/debug.cpp
@@ -34,17 +36,15 @@ set(SOURCES
             ${SOURCE_DIR}/engine/util/timing.cpp
             ${SOURCE_DIR}/engine/util/math.cpp
 
+            # applications source
             #${SOURCE_DIR}/app/study/terrain/app.cpp
             #${SOURCE_DIR}/app/study/terrain/terrain.cpp
             #${SOURCE_DIR}/app/study/terrain/tile.cpp  
 
             ${SOURCE_DIR}/app/study/grass/app.cpp
-            #${SOURCE_DIR}/app/study/grass/plant_node.cpp
-            #${SOURCE_DIR}/app/study/grass/plant.cpp 
-            #${SOURCE_DIR}/app/study/grass/grass_blade.cpp  
-            ${SOURCE_DIR}/app/study/grass/grass.cpp
-            ${SOURCE_DIR}/app/study/grass/grass_entity.cpp
-            ${SOURCE_DIR}/app/study/grass/grass_physics.cpp  
+            ${SOURCE_DIR}/app/study/grass/collection.cpp
+            ${SOURCE_DIR}/app/study/grass/entity.cpp
+            ${SOURCE_DIR}/app/study/grass/physics.cpp  
             ${SOURCE_DIR}/app/study/grass/wind.cpp     
     )
 

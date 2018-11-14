@@ -30,7 +30,7 @@ void main()
 
 
     mat4 projection_from_local = u.projection_from_view * u.view_from_world * u.world_from_local;
-    float half_width = 0.02;
+    float half_width = 0.12;
     gl_Position = projection_from_local * (gl_in[0].gl_Position + vec4(half_width, 0.0, 0.0, 0.0));
     o.color = COLOR_MASKS[gl_PrimitiveIDIn];
     EmitVertex();

@@ -34,8 +34,10 @@ private:
 };
 
 // Utility functions
-// Use glm function to normalize, but return 0 vector if given vector is zero
+// Use glm function to normalize, but return same vector vector if given vector is zero
 tp::Vec3 NormalizeSafe(const tp::Vec3 &vector);
+// If axis is 0 return the same point, without this rotation would be - nan
+tp::Vec3 RotateSafe(const tp::Vec3 &point, const tp::Real angle, const tp::Vec3 &axis);
 // Find given vectors projections vector onto XZ plane
 tp::Vec3 GetXZProj(const tp::Vec3 &vector);
 

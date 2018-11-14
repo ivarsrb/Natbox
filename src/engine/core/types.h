@@ -10,5 +10,5 @@ using Real = double;
 // Commonly used types
 using Vec3 = glm::tvec3<engine::tp::Real>;
 using Vec2 = glm::tvec2<engine::tp::Real>;
-
+using Mat4 = glm::tmat4x4<tp::Real>;
 }; // renderer
