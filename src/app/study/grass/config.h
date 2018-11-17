@@ -13,4 +13,5 @@
 #define FIXED_DT (1/60.)
 // PATHES
 #define MODELS_PATH "res/study/grass/models/"
+#define TEXTURE_PATH "res/study/"
 #define SHADER_PATH "shaders/study/grass/"

@@ -86,6 +86,9 @@ public:
     gl::Shader CreateVertexShader(std::string source_file);
     gl::Shader CreatePixelShader(std::string source_file);
     gl::Shader CreateGeometryShader(std::string source_file);
+    gl::Shader CreateTessallationControlShader(std::string source_file);
+    gl::Shader CreateTessallationEvaluationShader(std::string source_file);
+
     // TODO: when adding other shader types use ovearloading and new functions
     //gl::Program CreatePipeline(const gl::Shader &vertex_shader, const gl::Shader &pixel_shader);
     gl::Program CreatePipeline(const std::vector<gl::Shader> &shaders);
@@ -104,6 +107,7 @@ public:
     //void SetTexture2D(gl::Texture2D &texture, const bool bind = false, const uint32_t texture_unit = 0);
     // Draw
     void Clear(const ClearBuffer clear = ClearBuffer::kAll);
+    void DrawPatches(uint32_t offset, uint32_t count, uint32_t vert_per_patch);
     void DrawPoints(uint32_t offset, uint32_t count);
     void DrawLineStrip(uint32_t offset, uint32_t count);
     void DrawTriangles(uint32_t offset, uint32_t count);

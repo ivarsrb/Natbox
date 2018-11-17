@@ -14,7 +14,8 @@ public:
     enum class Type {
         kGrass1 = 0,
         kGrass2,
-        kGrass3
+        kGrass3,
+        kGrass4
     };
     // Per grass entity data
     struct Properties {
@@ -43,5 +44,7 @@ private:
     std::vector<VertexType> vertices_;
     // Simulate animation of grass edges in dynamic wind force and return new calculated edges
     std::optional<Physics> physics_;
+    // Textures
+    std::optional<engine::renderer::gl::Texture2D> diffuse_map_;
 };
 }; // grass

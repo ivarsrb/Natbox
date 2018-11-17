@@ -15,9 +15,9 @@ Wind::Wind(renderer::RenderDevice &render_device) {
 void Wind::InitGeometry(renderer::RenderDevice &render_device) {
     // Wind vector geometry
     std::vector<renderer::types::FPos> vertices;
-    vertices.push_back({glm::vec3(0.0,0.0,1.0)});
-    vertices.push_back({glm::vec3(0.1,0.0,0.0)});
-    vertices.push_back({glm::vec3(-0.1,0.0,0.0)});
+    vertices.push_back({glm::vec3(0.0,-0.001,1.0)});
+    vertices.push_back({glm::vec3(0.1,-0.001,0.0)});
+    vertices.push_back({glm::vec3(-0.1,-0.001,0.0)});
     std::vector<uint32_t> indices;
     indices.emplace_back(0);
     indices.emplace_back(1);

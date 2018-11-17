@@ -32,6 +32,9 @@ void Entity::Init(renderer::RenderDevice &render_device) {
         case Type::kGrass3:
             model_file_name = "grass_3.json";
             break;
+        case Type::kGrass4:
+            model_file_name = "grass_4.json";
+            break;
     }
     std::vector<Physics::Edge> edges = GetEdgesFromFile(model_file_name);
     // Physics
@@ -48,6 +51,9 @@ void Entity::Init(renderer::RenderDevice &render_device) {
     vertex_attributes.at(0).offset = 0;
     vertex_attributes.at(0).stride = sizeof(VertexType); // always the same for all atributes within vertex array
     vertex_array_.emplace(render_device.CreateVertexArray(vertex_buffers_, vertex_attributes));
+    // Textures
+    std::string tex_file_name = "test64.png";
+    diffuse_map_.emplace(render_device.CreateTexture2D(TEXTURE_PATH + tex_file_name, renderer::Image::BitSize::k8bit, false));
 }
 
 void Entity::Update(tp::Real dt, const Wind &wind) {
@@ -59,6 +65,7 @@ void Entity::Update(tp::Real dt, const Wind &wind) {
 }
 
 void Entity::Render(renderer::RenderDevice &render_device, renderer::gl::Buffer &uniform_buffer_scene, ShaderData &shader_data) {
+    diffuse_map_->BindTextureUnit(renderer::RenderDevice::TextureBindingPoint::kDiffuse);
     tp::Mat4 world_mat(1.0);
     world_mat = glm::translate(world_mat, properties_.world_position);
     world_mat = glm::rotate(world_mat, properties_.rotation, util::math::kGroundNormal);
@@ -75,7 +82,8 @@ void Entity::Render(renderer::RenderDevice &render_device, renderer::gl::Buffer 
     vertex_buffers_.at(0).SubData(0, vertices_.size() * sizeof(VertexType), vertices_.data());
 
     vertex_array_->Bind();
-    render_device.DrawLineStrip(0, vertices_.size());
+    render_device.DrawPatches(0, vertices_.size(), 4);
+    //render_device.DrawLineStrip(0, vertices_.size());
     vertex_array_->Unbind();
 }
 

@@ -32,6 +32,21 @@ gl::Shader RenderDevice::CreateGeometryShader(std::string source_file) {
     geometry_shader.Compile();
     return geometry_shader;
 }
+
+gl::Shader RenderDevice::CreateTessallationControlShader(std::string source_file) {
+    gl::Shader tessallation_shader(gl::Shader::ShaderType::kTessControlShader);
+    tessallation_shader.LoadSource(source_file);
+    tessallation_shader.Compile();
+    return tessallation_shader;
+}
+
+gl::Shader RenderDevice::CreateTessallationEvaluationShader(std::string source_file) {
+    gl::Shader tessallation_shader(gl::Shader::ShaderType::kTessEvaluationShader);
+    tessallation_shader.LoadSource(source_file);
+    tessallation_shader.Compile();
+    return tessallation_shader;
+}
+
 /*
 gl::Program RenderDevice::CreatePipeline(const gl::Shader &vertex_shader, const gl::Shader &pixel_shader) {
     gl::Program pipeline;
@@ -231,6 +246,17 @@ void RenderDevice::Clear(const ClearBuffer clear ) {
     if (clear == ClearBuffer::kAll || clear == ClearBuffer::kStencil) {
         glClearBufferfv(GL_STENCIL, draw_buffer, &one);
     }
+}
+
+// offset - index of first elemnt in array, count - number of elements to draw
+// vert_per_patch - how many vertices are per patch
+void RenderDevice::DrawPatches(uint32_t offset, uint32_t count, uint32_t vert_per_patch) {
+    assert(vert_per_patch > 0);
+    glPatchParameteri(GL_PATCH_VERTICES, vert_per_patch);
+    glDrawArrays(GL_PATCHES, offset, count);
+    // Stats
+    render_stats.num_drawcalls_per_frame++;
+    render_stats.num_primitives_per_frame += count / vert_per_patch;
 }
 
 // offset - index of first elemnt in array, count - number of elements to draw
