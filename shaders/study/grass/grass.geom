@@ -11,6 +11,7 @@ layout(std140, binding = 0) uniform SceneUniforms {
 in VertexDataTE {
     vec3 local_position;
     float texture_v;
+    vec3 tangent;
 } i[];
 
 out VertexDataG {
@@ -18,69 +19,44 @@ out VertexDataG {
     vec2 texture;
 } o;
 
-//gl_PrimitiveIDIn  - may not worl with selaation shader
+//gl_PrimitiveIDIn  - may not worl with selaation shader !
 
 void main() 
 {    
     // predetermined
-    const float section_count = 6.0;
     const float half_width = 0.5;
     const vec3 white_color = vec3(1.0, 1.0, 1.0);
-    // each primitive it's own color
-    const vec3 COLOR_MASKS[3] = vec3[]( vec3( 0.0, 1.0, 0.0 ),
-                                        vec3( 0.5, 0.5, 0.5 ),
-                                        vec3( 1.0, 0.5, 0.5 )
-                                        );
-    // line direction
-    vec4 world_position_1 = u.world_from_local * vec4(i[0].local_position, 1.0);
-    vec4 world_position_2 = u.world_from_local * vec4(i[1].local_position, 1.0);
-    vec4 world_origin_vec = world_position_2 - world_position_1;
-    // side vector to line
-    vec4 world_line_normal = vec4(0.0, 0.0, 0.0, 0.0);
-    world_line_normal.xyz = cross(vec3(0.0, 1.0, 0.0), world_origin_vec.xyz);
-/*
-    vec4 world_line_normal = vec4(0.0, 0.0, 0.0, 0.0);
-    world_line_normal.x = world_position_1.x - world_position_2.z;
-    world_line_normal.z = world_position_2.x - world_position_world_line_normal1.z;
-  */
-    world_line_normal = normalize(world_line_normal);
-    
-    // mat4 projection_from_local = u.projection_from_view * uworld_line_normal.view_from_world * u.world_from_local;
-    mat4 projection_from_world = u.projection_from_view * u.view_from_world;
-    //////////////////////////////////////////////////////////world_line_normal//////////////
-    //gl_Position = projection_from_local * (gl_in[0].gl_Positworld_line_normalion + vec4(half_width, 0.0, 0.0, 0.0));
-    gl_Position = projection_from_world * (world_position_1 + world_line_normal * half_width);
-    //o.color = COLOR_MASKS[gl_PrimitiveIDIn];
-    o.color = vec3(1.0, 0.5, 0.5);
+
+    // find perpendocular for bottom and top to know direction of vertex extrusion
+    const vec3 bottom_normal = vec3(0.0, 1.0, 0.0);
+    vec3 bottom_perpendicular = normalize(cross(bottom_normal, i[0].tangent));
+    const vec3 top_normal = vec3(0.0, 1.0, 0.0);
+    vec3 top_perpendicular = normalize(cross(top_normal, i[1].tangent));
+    // triangle strip points of the section
+    vec4 local_bottom_left = vec4(i[0].local_position + bottom_perpendicular * half_width, 1.0);
+    vec4 local_bottom_right = vec4(i[0].local_position + bottom_perpendicular * -half_width, 1.0);
+    vec4 local_top_left = vec4(i[1].local_position + top_perpendicular * half_width, 1.0);
+    vec4 local_top_right = vec4(i[1].local_position + top_perpendicular * -half_width, 1.0);
+
+    mat4 projection_from_local = u.projection_from_view * u.view_from_world * u.world_from_local;
+
+    gl_Position = projection_from_local * local_bottom_left;
+    o.color = white_color;
     o.texture = vec2(0.0, i[0].texture_v);
     EmitVertex();
 
-    //gl_Position = projection_from_local * (gl_in[0].gl_Position + vec4(-half_width, 0.0, 0.0, 0.0));
-    gl_Position = projection_from_world * (world_position_1 + world_line_normal * -half_width);
-    //o.color = COLOR_MASKS[gl_PrimitiveIDIn];
+    gl_Position = projection_from_local * local_bottom_right;
     o.color = white_color;
     o.texture = vec2(1.0, i[0].texture_v);
     EmitVertex();
 
-    //gl_Position = projection_from_local * (gl_in[1].gl_Position + vec4(half_width, 0.0, 0.0 ,0.0));
-    gl_Position = projection_from_world * (world_position_2 + world_line_normal * half_width);
-    //o.color = COLOR_MASKS[gl_PrimitiveIDIn];
-    o.color = vec3(1.0, 0.5, 0.5);
+    gl_Position = projection_from_local * local_top_left;
+    o.color = white_color;
     o.texture = vec2(0.0, i[1].texture_v);
     EmitVertex();
 
-    //gl_Position = projection_from_local * (gl_in[1].gl_Position + vec4(-half_width, 0.0, 0.0, 0.0));
-    gl_Position = projection_from_world * (world_position_2 + world_line_normal * -half_width);
-    //o.color = COLOR_MASKS[gl_PrimitiveIDIn];
+    gl_Position = projection_from_local * local_top_right;
     o.color = white_color;
     o.texture = vec2(1.0, i[1].texture_v);
     EmitVertex();
-    /*
-    for (n = 0; n < gl_in.length(); n++) {
-        gl_Position = gl_in[n].gl_Position; 
-        o.color = i[n].color;
-        EmitVertex();
-    }
-    EndPrimitive();
-    */
 } 

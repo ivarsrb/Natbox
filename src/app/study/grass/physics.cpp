@@ -202,7 +202,7 @@ Physics::Rotation Physics::Swing(tp::Real dt, const tp::Vec3 &wind_vec) {
     return rotation;
 }
 
-// Calculate and return set of fixed prGetCurrentEdgesoperties from edge data
+// Calculate and return set of fixed properties from edge data
 void Physics::GetPropertiesFromEdges(Properties &props, const std::vector<Edge> &edges) {
     // Mass
     props.mass = 0.0;

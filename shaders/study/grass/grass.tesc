@@ -18,6 +18,6 @@ void main()
         // only one line is tessalted
         gl_TessLevelOuter[0] = 1; 
         // tessalte into n number of segments
-        gl_TessLevelOuter[1] = 7; 
+        gl_TessLevelOuter[1] = 3; 
     }
 }
