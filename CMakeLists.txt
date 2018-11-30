@@ -42,10 +42,18 @@ set(SOURCES
             #${SOURCE_DIR}/app/study/terrain/tile.cpp  
 
             ${SOURCE_DIR}/app/study/grass/app.cpp
-            ${SOURCE_DIR}/app/study/grass/collection.cpp
-            ${SOURCE_DIR}/app/study/grass/entity.cpp
-            ${SOURCE_DIR}/app/study/grass/physics.cpp  
-            ${SOURCE_DIR}/app/study/grass/wind.cpp     
+            #${SOURCE_DIR}/app/study/grass/collection.cpp
+            #${SOURCE_DIR}/app/study/grass/entity.cpp
+            #${SOURCE_DIR}/app/study/grass/physics.cpp  
+            #${SOURCE_DIR}/app/study/grass/wind.cpp
+            ${SOURCE_DIR}/app/study/grass/renderer.cpp
+            ${SOURCE_DIR}/app/study/grass/grass_entity.cpp
+            ${SOURCE_DIR}/app/study/grass/grass_model.cpp
+            ${SOURCE_DIR}/app/study/grass/grass_physics.cpp
+            ${SOURCE_DIR}/app/study/grass/grass_renderer.cpp
+            ${SOURCE_DIR}/app/study/grass/grass_collection.cpp
+            ${SOURCE_DIR}/app/study/grass/wind_entity.cpp
+            ${SOURCE_DIR}/app/study/grass/wind_renderer.cpp
     )
 
 #### Packages

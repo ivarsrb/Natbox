@@ -163,7 +163,7 @@ void IPlatformApp::KeyCallback(GLFWwindow * window, int32_t key, int32_t scancod
     }
     else {
         this_obj->input_.UpdateKeys(key, action);
-        this_obj->KeyPress(&this_obj->input_); //virtual
+        this_obj->KeyPress(this_obj->input_); //virtual
     }
     
 }
@@ -171,7 +171,7 @@ void IPlatformApp::KeyCallback(GLFWwindow * window, int32_t key, int32_t scancod
 void IPlatformApp::MouseCallback(GLFWwindow * window, double xpos, double ypos) {
     IPlatformApp* this_obj = static_cast<IPlatformApp*>(glfwGetWindowUserPointer(window));
     this_obj->input_.UpdateMouse((float)xpos, (float)ypos);
-    this_obj->MouseMove(&this_obj->input_); //virtual
+    this_obj->MouseMove(this_obj->input_); //virtual
 
 }
 
@@ -195,7 +195,7 @@ void IPlatformApp::MouseButtonCallback(GLFWwindow * window, int button, int acti
     }
     else {
         this_obj->input_.UpdateMouseButton(button, action, mods);
-        this_obj->MouseButtonPress(&this_obj->input_); //virtual
+        this_obj->MouseButtonPress(this_obj->input_); //virtual
     }
 }
 
@@ -203,6 +203,6 @@ void IPlatformApp::ScrollCallback(GLFWwindow * window, double xoffset, double yo
     IPlatformApp* this_obj = static_cast<IPlatformApp*>(glfwGetWindowUserPointer(window));
     //ImGui_ImplGlfwGL3_ScrollCallback(window, xoffset, yoffset);
     this_obj->input_.UpdateScroll((float)xoffset, (float)yoffset);
-    this_obj->MouseScroll(&this_obj->input_); //virtual
+    this_obj->MouseScroll(this_obj->input_); //virtual
 }
 }; // platform

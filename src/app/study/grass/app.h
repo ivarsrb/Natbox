@@ -6,10 +6,11 @@
 #include <engine/renderer/render_device.h>
 #include <engine/core/camera.h>
 #include <engine/core/types.h>
-#include <engine/util/timing.h>
 #include "types.h"
-#include "wind.h"
-#include "collection.h"
+#include "grass_collection.h"
+#include "wind_entity.h"
+#include "renderer.h"
+
 
 namespace app::study::grass {
 class App : public engine::platform::IPlatformApp {
@@ -23,19 +24,13 @@ private:
     void Render() override;
     void RenderGUI(const engine::platform::Timer &timer) override;
     void Resize(const glm::ivec2 &size) override;
-    void KeyPress(const engine::platform::Input *input) override;
-    void MouseMove(const engine::platform::Input *input) override;
-    void MouseButtonPress(const engine::platform::Input *input) override;
-    void MouseScroll(const engine::platform::Input *input) override;
+    void KeyPress(const engine::platform::Input &input) override;
+    void MouseMove(const engine::platform::Input &input) override;
+    void MouseButtonPress(const engine::platform::Input &input) override;
+    void MouseScroll(const engine::platform::Input &input) override;
     void Init();
-    engine::util::Timing loading_clock_;
-    engine::core::Camera camera_;
-    engine::tp::Real z_near_;
-    engine::tp::Real z_far_;
-    ShaderData shader_data_;
-    engine::renderer::RenderDevice render_device_;
-    engine::renderer::gl::Buffer uniform_buffer_scene_;
-    Collection grass_;
-    Wind wind_;
+    GrassCollection grass_collection_;
+    WindEntity wind_entity_;
+    Renderer renderer_;
 };
 };

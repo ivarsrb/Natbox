@@ -2,32 +2,21 @@
     "edges": [
         {
             "position": [0.0, 0.0, 0.0],
-            "stiffness": null,
-            "mass": 0.0,
-            "width": 0.0
-
+            "stiffness": null
         },
         {
             "position": [1.0, 0.0, 1.0],
-            "stiffness": 5.0,
-            "mass": 0.0033,
-            "width": 0.1
-
+            "stiffness": 5.0
         },
         {
             "position": [-1.0, 0.0, 2.0],
-            "stiffness": 3.0,
-            "mass": 0.0033,
-            "width": 0.1
-
+            "stiffness": 3.0
         },
         {
             "position": [0.0, 0.0, 3.0],
-            "stiffness": 2.0,
-            "mass": 0.0033,
-            "width": 0.1
-
+            "stiffness": 2.0
         }
-
-    ]
+    ],
+    "mass": 0.01,
+    "width": 0.1
 }

@@ -96,6 +96,7 @@ public:
     gl::Buffer CreateUniformBuffer(uint32_t uniform_block_size, uint32_t binding_point);
     // Vertex
     gl::Buffer CreateVertexBuffer(const uint64_t size, const void *data, bool dynamic = false);
+    gl::VertexArray CreateVertexArray(const gl::Buffer &vertex_buffer, const std::vector<types::VertexAttributeDescr> &vertex_attributes);
     gl::VertexArray CreateVertexArray(const std::vector<gl::Buffer> &vertex_buffers, const std::vector<types::VertexAttributeDescr> &vertex_attributes);
     void BindVertexArrayAttributes(gl::VertexArray& vertex_array, const std::vector<types::VertexAttributeDescr> &vertex_attributes, const uint32_t binding_index);
     // Index

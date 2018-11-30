@@ -92,6 +92,32 @@ gl::Buffer RenderDevice::CreateVertexBuffer(const uint64_t size, const void * da
     return vertex_buffer;
 }
 
+// VB Binding point in 0
+gl::VertexArray RenderDevice::CreateVertexArray(const gl::Buffer &vertex_buffer, const std::vector<types::VertexAttributeDescr> &vertex_attributes) {
+    gl::VertexArray vertex_array;
+
+    GLuint binding_index = 0;
+    // VBO
+    vertex_array.VertexBuffer(binding_index, vertex_buffer, 0, vertex_attributes.at(0).stride);
+
+    // Attributes
+    for (size_t i = 0; i < vertex_attributes.size(); i++) {
+        // Usually index comes from vertex shader
+        GLint attribute_index = vertex_attributes.at(i).attribute_index;
+        // Enable attributes
+        vertex_array.EnableAttrib(attribute_index);
+        // Set up attribute formats
+        vertex_array.AttribFormat(attribute_index, vertex_attributes.at(i).size, types::ToApiType(vertex_attributes.at(i).type), GL_FALSE, vertex_attributes.at(i).offset);
+        // To switch betwean buffers, use AttribBinding function by providing all attribute indexes and desired buffer binding index 
+        // By default set all attributes to fech data from buffer bound to 0 slot
+        // vertex_array.AttribBinding(attribute_index, 0);
+    }
+    // set all attributes to fech data from buffer bound to...
+    BindVertexArrayAttributes(vertex_array, vertex_attributes, binding_index);
+    return vertex_array;
+}
+
+// TODO: no point having to pass array if only one point is bound
 // Binding index for each vertex buffer is index in buffers vector
 // Index buffer should be bound separatly with member function of VAO
 gl::VertexArray RenderDevice::CreateVertexArray(const std::vector<gl::Buffer>& vertex_buffers, const std::vector<types::VertexAttributeDescr> &vertex_attributes) {

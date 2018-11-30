@@ -13,6 +13,7 @@ void Mesh::SetData(RenderDevice &render_device, const std::vector<types::FPos> &
     index_count_ = static_cast<uint32_t>(indices.size());
     // remove_reference because decltype cannot accept reference from function param 
     uint32_t vertex_type_size = sizeof(std::remove_reference_t<decltype(vertices)>::value_type);
+    // TODO: use CreateVertexArray without vector of vertex buffers
     vertex_buffers_.push_back(render_device.CreateVertexBuffer(vertices.size() * vertex_type_size, vertices.data()));
     index_buffer_ = std::make_unique<gl::Buffer>();
     index_buffer_->Storage(indices.size() * sizeof(uint32_t), indices.data(), 0);
