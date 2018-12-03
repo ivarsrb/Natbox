@@ -3,7 +3,7 @@
 
 namespace app::study::grass {
 GrassCollection::GrassCollection() {
-    collection.emplace_back("grass_1.json", engine::tp::Vec3(0.0), 0.0, 1.0);
+    //collection.emplace_back("grass_1.json", engine::tp::Vec3(0.0), 0.0, 1.0);
     collection.emplace_back("grass_3.json", engine::tp::Vec3(0.0), M_PI_2, 1.0);
 }
 

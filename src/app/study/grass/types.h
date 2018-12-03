@@ -12,5 +12,13 @@ struct UniformData {
     glm::mat4 projection_from_view;
     glm::mat4 world_from_local;
 };
-using VertexType = engine::renderer::types::FPos;
+//using VertexTypeGrass = engine::renderer::types::FPos;
+struct VertexTypeGrass {
+    glm::vec3 position;
+    // origin vectors
+    glm::vec3 edge;
+    glm::vec3 normal;
+    glm::vec3 side;
+};
+
 };

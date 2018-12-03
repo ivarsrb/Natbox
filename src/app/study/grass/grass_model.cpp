@@ -48,7 +48,7 @@ void GrassModel::LoadFromFile(const std::string &file_name) {
         ComputeOrientationVectors(edges_static_);
         //std::cout << model_data.dump(4) << std::endl;
     } else {
-        throw std::runtime_error("(Grass model) could not open file " + file_name);
+        throw std::runtime_error("(Grass model) could nadot open file " + file_name);
     }
 }
 
@@ -60,9 +60,12 @@ void GrassModel::ComputeOrientationVectors(std::vector<Edge> &edges) {
             edge_it->edge_vec = next_edge_it->position - edge_it->position;
             // This side vectors is used to determine normal of an edge
             // we are assuming hat initially no edge can be twisted
-            const auto refrence_side_vec = engine::tp::Vec3(1.0, 0.0, 0.0); 
-            edge_it->normal_vec = engine::util::math::NormalizeSafe(glm::cross(edge_it->edge_vec, refrence_side_vec));
-            edge_it->side_vec = engine::util::math::NormalizeSafe(glm::cross(edge_it->edge_vec, edge_it->normal_vec));
+            //const auto refrence_side_vec = engine::tp::Vec3(1.0, 0.0, 0.0); 
+            //edge_it->normal_vec = engine::util::math::NormalizeSafe(glm::cross(edge_it->edge_vec, refrence_side_vec));
+            //edge_it->side_vec = engine::util::math::NormalizeSafe(glm::cross(edge_it->edge_vec, edge_it->normal_vec));
+            const auto refrence_normal_vec = engine::tp::Vec3(0.0, 1.0, 0.0); 
+            edge_it->side_vec = engine::util::math::NormalizeSafe(glm::cross(edge_it->edge_vec, refrence_normal_vec));
+            edge_it->normal_vec = engine::util::math::NormalizeSafe(glm::cross(edge_it->edge_vec, edge_it->side_vec));
         } else {
             // For the last one
             auto prev_edge_it = std::prev(edge_it);
