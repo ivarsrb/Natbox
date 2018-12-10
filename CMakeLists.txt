@@ -42,10 +42,6 @@ set(SOURCES
             #${SOURCE_DIR}/app/study/terrain/tile.cpp  
 
             ${SOURCE_DIR}/app/study/grass/app.cpp
-            #${SOURCE_DIR}/app/study/grass/collection.cpp
-            #${SOURCE_DIR}/app/study/grass/entity.cpp
-            #${SOURCE_DIR}/app/study/grass/physics.cpp  
-            #${SOURCE_DIR}/app/study/grass/wind.cpp
             ${SOURCE_DIR}/app/study/grass/renderer.cpp
             ${SOURCE_DIR}/app/study/grass/grass_entity.cpp
             ${SOURCE_DIR}/app/study/grass/grass_model.cpp

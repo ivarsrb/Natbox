@@ -1,22 +1,22 @@
 #include "renderer.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <imgui/imgui.h>
+#include <engine/renderer/render_device.h>
 
 namespace app::study::grass {
 Renderer::Renderer(const glm::ivec2 &window_size, const GrassCollection &grass_collection): 
                                             camera_(engine::tp::Vec3(0.0, 1.0, -5.0), 180.0, 0.0),
                                             z_near_ (0.1),
                                             z_far_ (100.0),
-                                            uniform_buffer_(render_device_.CreateUniformBuffer(sizeof(UniformData), engine::renderer::RenderDevice::UniformBufferBindingPoint::kScene)),
-                                            grass_renderer_(render_device_, grass_collection) ,
-                                            wind_renderer_(render_device_)
+                                            uniform_buffer_(engine::renderer::RenderDevice::CreateUniformBuffer(sizeof(UniformData), engine::renderer::RenderDevice::UniformBufferBindingPoint::kScene)),
+                                            grass_renderer_(grass_collection)
 {
     // Depth stencil state
-    render_device_.SetDepthStencilState(engine::renderer::RenderDevice::DepthStencilState::kDepth);
+    engine::renderer::RenderDevice::SetDepthStencilState(engine::renderer::RenderDevice::DepthStencilState::kDepth);
     // Opengl state
-    render_device_.SetRasterState(engine::renderer::RenderDevice::RasterState::kNoCullSolid);
+    engine::renderer::RenderDevice::SetRasterState(engine::renderer::RenderDevice::RasterState::kNoCullSolid);
     // View port
-    render_device_.SetViewport(glm::ivec2(0, 0), window_size);
+    engine::renderer::RenderDevice::SetViewport(glm::ivec2(0, 0), window_size);
     
     // projection matrix
     uniform_data_.projection_from_view = glm::perspective(glm::radians(camera_.GetFOV()), window_size.x / (engine::tp::Real)window_size.y, z_near_, z_far_);
@@ -41,16 +41,15 @@ void Renderer::Update(const engine::tp::Real dt, const engine::platform::Input &
         camera_.ProcessKeyboard(engine::core::Camera::kDown, dt);
 }
 
-
 void Renderer::Render(const GrassCollection &grass_collection, const WindEntity &wind_entity) {
-    render_device_.Clear(engine::renderer::RenderDevice::ClearBuffer::kColorDepth);
+    engine::renderer::RenderDevice::Clear(engine::renderer::RenderDevice::ClearBuffer::kColorDepth);
 
     // View matrix
     uniform_data_.view_from_world = camera_.GetViewMatrix();
     uniform_buffer_.SubData(offsetof(UniformData, view_from_world), sizeof(UniformData::view_from_world), &uniform_data_.view_from_world[0]);
 
-    grass_renderer_.Render(render_device_, grass_collection, uniform_buffer_, uniform_data_);
-    wind_renderer_.Render(render_device_, wind_entity, uniform_buffer_, uniform_data_);
+    grass_renderer_.Render(grass_collection, uniform_buffer_, uniform_data_);
+    wind_renderer_.Render(wind_entity, uniform_buffer_, uniform_data_);
 }
 
 // NOTE: actual rendering takes place after Render function, this only sets up what to render and how it reacts 
@@ -65,16 +64,17 @@ void Renderer::RenderGUI(const engine::platform::Timer &timer, GrassCollection &
     ImGui::Separator();
     ImGui::Text("Frame stats");
     //ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    ImGui::Text("Drawcals: %d, primitives: %d", render_device_.render_stats.num_drawcalls_per_frame, render_device_.render_stats.num_primitives_per_frame);
+    ImGui::Text("Drawcals: %d, primitives: %d", engine::renderer::RenderDevice::render_stats.num_drawcalls_per_frame, 
+                                                engine::renderer::RenderDevice::render_stats.num_primitives_per_frame);
     ImGui::Separator();
     ImGui::Text("Render options");
-    bool wireframe = (render_device_.render_stats.previous_raster_state == engine::renderer::RenderDevice::RasterState::kNoCullWire);
+    bool wireframe = (engine::renderer::RenderDevice::render_stats.previous_raster_state == engine::renderer::RenderDevice::RasterState::kNoCullWire);
     ImGui::Checkbox("Wireframe ", &wireframe); //ImGui::SameLine(150);
     if (wireframe) {
-        render_device_.SetRasterState(engine::renderer::RenderDevice::RasterState::kNoCullWire);
+        engine::renderer::RenderDevice::SetRasterState(engine::renderer::RenderDevice::RasterState::kNoCullWire);
     }
     else {
-        render_device_.SetRasterState(engine::renderer::RenderDevice::RasterState::kNoCullSolid);
+        engine::renderer::RenderDevice::SetRasterState(engine::renderer::RenderDevice::RasterState::kNoCullSolid);
     }
     ImGui::Separator();
     ImGui::Text("Camera");
@@ -88,7 +88,7 @@ void Renderer::RenderGUI(const engine::platform::Timer &timer, GrassCollection &
 }
 
 void Renderer::Resize(const glm::ivec2 &window_size) {
-    render_device_.SetViewport(glm::ivec2(0, 0), window_size);
+    engine::renderer::RenderDevice::SetViewport(glm::ivec2(0, 0), window_size);
     // Uprojection matrix
     uniform_data_.projection_from_view = glm::perspective(glm::radians(camera_.GetFOV()), window_size.x / (engine::tp::Real)window_size.y, z_near_, z_far_);
     uniform_buffer_.SubData(offsetof(UniformData, projection_from_view), sizeof(UniformData::projection_from_view), &uniform_data_.projection_from_view[0]);

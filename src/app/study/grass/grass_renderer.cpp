@@ -1,15 +1,18 @@
 #include "grass_renderer.h"
 #include <cstddef>
 #include <glm/gtc/matrix_transform.hpp>
+#include <engine/renderer/render_device.h>
 #include <imgui/imgui.h>
 #include <engine/util/math.h>
 #include "config.h"
 
+
 namespace app::study::grass {
-GrassRenderer::GrassRenderer(engine::renderer::RenderDevice &render_device, const GrassCollection &collection) {
+GrassRenderer::GrassRenderer(const GrassCollection &collection) {
+    
     vertices_.resize(collection.GetTotalVertexCount());
     // Dynamic vertex buffer with currently no data
-    vertex_buffer_.emplace(render_device.CreateVertexBuffer(vertices_.size() * sizeof(VertexTypeGrass), 0, true));
+    vertex_buffer_.emplace(engine::renderer::RenderDevice::CreateVertexBuffer(vertices_.size() * sizeof(VertexTypeGrass), 0, true));
     // Vertex array
     std::vector<engine::renderer::types::VertexAttributeDescr> vertex_attributes(AttribLocation::kSizeMeasure);
     // Position
@@ -33,10 +36,10 @@ GrassRenderer::GrassRenderer(engine::renderer::RenderDevice &render_device, cons
     vertex_attributes.at(3).size = sizeof(VertexTypeGrass::side) / sizeof(float); // 3  // (start_of_next_attrib - start_of_this_attrib) / size_of_single_element_type
     vertex_attributes.at(3).type = engine::renderer::types::RenderDataTypes::kFloat;
     vertex_attributes.at(3).offset = offsetof(VertexTypeGrass, side);
-    vertex_array_.emplace(render_device.CreateVertexArray(*vertex_buffer_, vertex_attributes));
+    vertex_array_.emplace(engine::renderer::RenderDevice::CreateVertexArray(*vertex_buffer_, vertex_attributes));
     // Textures
     std::string tex_file_name = "grass_blade.png";
-    diffuse_map_.emplace(render_device.CreateTexture2D(TEXTURE_PATH + tex_file_name, engine::renderer::Image::BitSize::k8bit, false));
+    diffuse_map_.emplace(engine::renderer::RenderDevice::CreateTexture2D(TEXTURE_PATH + tex_file_name, engine::renderer::Image::BitSize::k8bit, false));
     // Shaders
 /*
     std::string  vs_source = std::string(SHADER_PATH) + "grass.vert";
@@ -52,16 +55,15 @@ GrassRenderer::GrassRenderer(engine::renderer::RenderDevice &render_device, cons
     std::string  ps_source = std::string(SHADER_PATH) + "grass_attribs.frag";
 
     std::vector<engine::renderer::gl::Shader> shaders;
-    shaders.push_back(render_device.CreateVertexShader(vs_source));
-    shaders.push_back(render_device.CreateGeometryShader(gs_source));
-    shaders.push_back(render_device.CreateTessallationControlShader(tesc_source));
-    shaders.push_back(render_device.CreateTessallationEvaluationShader(tese_source));
-    shaders.push_back(render_device.CreatePixelShader(ps_source));
-    pipeline_ .emplace(render_device.CreatePipeline(shaders));
-
+    shaders.push_back(engine::renderer::RenderDevice::CreateVertexShader(vs_source));
+    shaders.push_back(engine::renderer::RenderDevice::CreateGeometryShader(gs_source));
+    shaders.push_back(engine::renderer::RenderDevice::CreateTessallationControlShader(tesc_source));
+    shaders.push_back(engine::renderer::RenderDevice::CreateTessallationEvaluationShader(tese_source));
+    shaders.push_back(engine::renderer::RenderDevice::CreatePixelShader(ps_source));
+    pipeline_ .emplace(engine::renderer::RenderDevice::CreatePipeline(shaders));
 }
 
-void GrassRenderer::Render(engine::renderer::RenderDevice &render_device, const GrassCollection &collection, engine::renderer::gl::Buffer &uniform_buffer, 
+void GrassRenderer::Render(const GrassCollection &collection, engine::renderer::gl::Buffer &uniform_buffer, 
                            UniformData &uniform_data) {
     // Update whole vertex buffer
     UpdateVertexBuffer(collection);
@@ -78,7 +80,7 @@ void GrassRenderer::Render(engine::renderer::RenderDevice &render_device, const 
         uniform_buffer.SubData(offsetof(UniformData, world_from_local), sizeof(UniformData::world_from_local), &uniform_data.world_from_local[0]);
         uint32_t vertices_per_patch = entity.GetEdges().size();
         uint32_t start_vertex = entity_number * vertices_per_patch;
-        render_device.DrawPatches(start_vertex, vertices_per_patch, vertices_per_patch);
+        engine::renderer::RenderDevice::DrawPatches(start_vertex, vertices_per_patch, vertices_per_patch);
         ++entity_number;
     }
     vertex_array_->Unbind();

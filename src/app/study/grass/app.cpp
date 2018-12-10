@@ -1,8 +1,4 @@
 #include "app.h"
-#include <iostream>
-#include <glm/gtc/matrix_transform.hpp>
-#include <engine/renderer/types.h>
-#include <imgui/imgui.h>
 #include "config.h"
 
 using namespace engine;
@@ -21,7 +17,7 @@ App::App() : IPlatformApp( { glm::ivec2(WIN_WIDTH, WIN_HEIGHT),
 }
 
 App::~App() {
-    
+
 }
 
 void App::Init() {

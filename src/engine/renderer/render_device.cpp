@@ -2,15 +2,8 @@
 #include <exception>
 
 namespace engine::renderer {
-RenderDevice::RenderDevice() {
-    // If OpenGL doesnt work check if context is already created
-    SetRasterState(RasterState::kNoCullSolid);
-    SetDepthStencilState(DepthStencilState::kDisabled);
-}
-
-RenderDevice::~RenderDevice() {
-
-}
+// Definition of static variables
+RenderDevice::RenderStats RenderDevice::render_stats;
 
 gl::Shader RenderDevice::CreateVertexShader(std::string source_file) {
     gl::Shader vertex_shader(gl::Shader::ShaderType::kVertexShader);
@@ -46,18 +39,6 @@ gl::Shader RenderDevice::CreateTessallationEvaluationShader(std::string source_f
     tessallation_shader.Compile();
     return tessallation_shader;
 }
-
-/*
-gl::Program RenderDevice::CreatePipeline(const gl::Shader &vertex_shader, const gl::Shader &pixel_shader) {
-    gl::Program pipeline;
-    pipeline.AttachShader(vertex_shader);
-    pipeline.AttachShader(pixel_shader);
-    pipeline.Link();
-    // Detach so shaders get actually deleted when shader destructor is called
-    pipeline.DetachShader(vertex_shader);
-    pipeline.DetachShader(pixel_shader);
-    return pipeline;
-}*/
 
 gl::Program RenderDevice::CreatePipeline(const std::vector<gl::Shader> &shaders) {
     gl::Program pipeline;
@@ -120,6 +101,7 @@ gl::VertexArray RenderDevice::CreateVertexArray(const gl::Buffer &vertex_buffer,
 // TODO: no point having to pass array if only one point is bound
 // Binding index for each vertex buffer is index in buffers vector
 // Index buffer should be bound separatly with member function of VAO
+/*
 gl::VertexArray RenderDevice::CreateVertexArray(const std::vector<gl::Buffer>& vertex_buffers, const std::vector<types::VertexAttributeDescr> &vertex_attributes) {
     gl::VertexArray vertex_array;
 
@@ -146,7 +128,7 @@ gl::VertexArray RenderDevice::CreateVertexArray(const std::vector<gl::Buffer>& v
     // By default set all attributes to fech data from buffer bound to 0 slot
     BindVertexArrayAttributes(vertex_array, vertex_attributes, 0);
     return vertex_array;
-}
+}*/
 
 // Bind all attributes from given array to VBO binding index
 void RenderDevice::BindVertexArrayAttributes(gl::VertexArray& vertex_array, const std::vector<types::VertexAttributeDescr> &vertex_attributes, const uint32_t binding_index) {

@@ -1,4 +1,12 @@
 #pragma once
+/* #ifdef __gl_h_
+#error DEFFFFFFINED GL 
+#endif
+
+#ifdef __glad_h_
+#error DEFFFFFFINED GLAD 
+#endif  */
+
 #include <glad/glad.h>
 #include <iostream>
 

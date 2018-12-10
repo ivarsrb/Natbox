@@ -1,16 +1,8 @@
 #pragma once
-#include <vector>
-#include <optional>
-#include <glm/glm.hpp>
 #include <engine/platform/i_platform_app.h>
-#include <engine/renderer/render_device.h>
-#include <engine/core/camera.h>
-#include <engine/core/types.h>
-#include "types.h"
 #include "grass_collection.h"
 #include "wind_entity.h"
 #include "renderer.h"
-
 
 namespace app::study::grass {
 class App : public engine::platform::IPlatformApp {

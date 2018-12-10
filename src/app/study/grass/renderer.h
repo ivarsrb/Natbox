@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include <engine/renderer/render_device.h>
+#include <engine/renderer/gl/buffer.h>
 #include <engine/core/types.h>
 #include <engine/core/camera.h>
 #include <engine/platform/input.h>
@@ -22,9 +22,7 @@ public:
     void MouseMove(const engine::platform::Input &input); 
     void MouseScroll(const engine::platform::Input &input, const glm::ivec2 &window_size);
 private: 
-
     engine::core::Camera camera_;
-    engine::renderer::RenderDevice render_device_;
     engine::tp::Real z_near_;
     engine::tp::Real z_far_;
     UniformData uniform_data_;
