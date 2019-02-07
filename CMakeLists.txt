@@ -50,6 +50,8 @@ set(SOURCES
             ${SOURCE_DIR}/app/study/grass/grass_collection.cpp
             ${SOURCE_DIR}/app/study/grass/wind_entity.cpp
             ${SOURCE_DIR}/app/study/grass/wind_renderer.cpp
+
+            #${SOURCE_DIR}/app/landscape/app.cpp
     )
 
 #### Packages

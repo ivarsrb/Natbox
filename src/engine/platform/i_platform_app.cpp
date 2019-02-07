@@ -153,6 +153,11 @@ void IPlatformApp::KeyCallback(GLFWwindow * window, int32_t key, int32_t scancod
         glfwSetWindowMonitor(this_obj->context_, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
     }
    
+    // Switch GUI on/off
+    if (key == GLFW_KEY_F1 && action == GLFW_PRESS) {
+        this_obj->configuration.use_gui = !this_obj->configuration.use_gui;
+    }
+
     // If Imgui wants input give it to them
     ImGuiIO& io = ImGui::GetIO();
     // NOTE: Problem with pressing enter and no being able to set focus later happens because
