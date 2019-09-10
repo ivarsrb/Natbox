@@ -85,18 +85,18 @@ public:
     static gl::Program CreatePipeline(const std::vector<gl::Shader> &shaders);
     static gl::Buffer CreateUniformBuffer(uint32_t uniform_block_size, uint32_t binding_point);
     // Vertex
-    static gl::Buffer CreateVertexBuffer(const uint64_t size, const void *data, bool dynamic = false);
+    static gl::Buffer CreateVertexBuffer( uint64_t size, const void *data, bool dynamic = false);
     static gl::VertexArray CreateVertexArray(const gl::Buffer &vertex_buffer, const std::vector<types::VertexAttributeDescr> &vertex_attributes);
     //gl::VertexArray CreateVertexArray(const std::vector<gl::Buffer> &vertex_buffers, const std::vector<types::VertexAttributeDescr> &vertex_attributes);
     // Index
     //gl::Buffer CreateIndexBuffer(const uint64_t size, const void *data);
     // Textures
-    static gl::Texture2D CreateTexture2D(const std::string texture_file, const Image::BitSize bit_size = Image::BitSize::k8bit, 
-                                  const bool create_mipmaps = true, const uint32_t unpack_pixel_align = 4);
+    static gl::Texture2D CreateTexture2D(const std::string& texture_file, Image::BitSize bit_size = Image::BitSize::k8bit, 
+                                   bool create_mipmaps = true,  uint32_t unpack_pixel_align = 4);
     // Weather to bind this texture to a texture unit, if is false, unit number is ignored
     //void SetTexture2D(gl::Texture2D &texture, const bool bind = false, const uint32_t texture_unit = 0);
     // Draw
-    static void Clear(const ClearBuffer clear = ClearBuffer::kAll);
+    static void Clear(ClearBuffer clear = ClearBuffer::kAll);
     static void DrawPatches(uint32_t offset, uint32_t count, uint32_t vert_per_patch);
     static void DrawPoints(uint32_t offset, uint32_t count);
     static void DrawLineStrip(uint32_t offset, uint32_t count);
@@ -107,12 +107,12 @@ public:
 
     static void SetViewport(glm::ivec2 lower_left, glm::ivec2 size);
     // States
-    static void SetRasterState(const RasterState state);
-    static void SetDepthStencilState(const DepthStencilState state); 
+    static void SetRasterState(RasterState state);
+    static void SetDepthStencilState(DepthStencilState state); 
     // Actual states and statistics
     static RenderStats render_stats;
 private:
-    static void BindVertexArrayAttributes(gl::VertexArray& vertex_array, const std::vector<types::VertexAttributeDescr> &vertex_attributes, const uint32_t binding_index);
+    static void BindVertexArrayAttributes(gl::VertexArray& vertex_array, const std::vector<types::VertexAttributeDescr> &vertex_attributes, uint32_t binding_index);
     static void ClearRenderStats();
 };
 }; // renderer

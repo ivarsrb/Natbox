@@ -11,7 +11,7 @@ public:
         k8bit = 0,
         k16bit
     };
-    Image(const std::string file, const BitSize bit_size = BitSize::k8bit);
+    Image(const std::string& file, BitSize bit_size = BitSize::k8bit);
     ~Image();
     // non-copyable
     Image(Image const&) = delete;

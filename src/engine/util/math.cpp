@@ -12,7 +12,7 @@
 namespace engine::util::math {
 
 // Vector in cartesian coordinate system is passed and transformed to spheric
-void SphericVector::InitFromCartesian(const tp::Vec3 &c_point, const AzimuthAxis azimuth) {
+void SphericVector::InitFromCartesian(const tp::Vec3 &c_point, AzimuthAxis azimuth) {
     azimuth_axis_ = azimuth;
     // Value whoch rotates around azimuth axis (except x, because it's always rotates around azimuth)
     tp::Real azimuth_value = 0;
@@ -78,7 +78,7 @@ tp::Vec3 NormalizeSafe(const tp::Vec3 &vector) {
     return (glm::length(vector) ? glm::normalize(vector) : vector);
 }
 // If axis is 0 return the same point, without this rotation would be - nan
-tp::Vec3 RotateSafe(const tp::Vec3 &point, const tp::Real angle, const tp::Vec3 &axis) {
+tp::Vec3 RotateSafe(const tp::Vec3 &point, tp::Real angle, const tp::Vec3 &axis) {
     return (glm::length(axis) ? glm::rotate(point, angle, axis) : point);
 }
 

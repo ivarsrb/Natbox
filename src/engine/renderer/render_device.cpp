@@ -66,7 +66,7 @@ gl::Buffer RenderDevice::CreateUniformBuffer(uint32_t uniform_block_size, uint32
     return uniform_buffer;
 }
 
-gl::Buffer RenderDevice::CreateVertexBuffer(const uint64_t size, const void * data, bool dynamic) {
+gl::Buffer RenderDevice::CreateVertexBuffer( uint64_t size, const void * data, bool dynamic) {
     gl::Buffer vertex_buffer;
     GLbitfield flag = (dynamic ? GL_DYNAMIC_STORAGE_BIT : 0);
     vertex_buffer.Storage(size, data, flag);
@@ -131,7 +131,7 @@ gl::VertexArray RenderDevice::CreateVertexArray(const std::vector<gl::Buffer>& v
 }*/
 
 // Bind all attributes from given array to VBO binding index
-void RenderDevice::BindVertexArrayAttributes(gl::VertexArray& vertex_array, const std::vector<types::VertexAttributeDescr> &vertex_attributes, const uint32_t binding_index) {
+void RenderDevice::BindVertexArrayAttributes(gl::VertexArray& vertex_array, const std::vector<types::VertexAttributeDescr> &vertex_attributes,  uint32_t binding_index) {
     for (size_t i = 0; i < vertex_attributes.size(); i++) {
         vertex_array.AttribBinding(vertex_attributes.at(i).attribute_index, binding_index);
     }
@@ -139,8 +139,8 @@ void RenderDevice::BindVertexArrayAttributes(gl::VertexArray& vertex_array, cons
 
 
 // Load texture from file, create storage upload data to storage, create mipmaps (optional), set parameters
-gl::Texture2D RenderDevice::CreateTexture2D(const std::string texture_file,  const Image::BitSize bit_size, 
-                                            const bool create_mipmaps, const uint32_t unpack_pixel_align) {
+gl::Texture2D RenderDevice::CreateTexture2D(const std::string& texture_file,   Image::BitSize bit_size, 
+                                             bool create_mipmaps,  uint32_t unpack_pixel_align) {
     gl::Texture2D texture;
     GLenum format, sizedformat;
     // Load external texture into cpu memeory
@@ -238,7 +238,7 @@ gl::Texture2D RenderDevice::CreateTexture2D(const std::string texture_file,  con
 
 
 // Clear color, depth or stencil buffers of a currently bound framebuffer
-void RenderDevice::Clear(const ClearBuffer clear ) {
+void RenderDevice::Clear( ClearBuffer clear ) {
     // Assuming clear always gets called at the top of the scene
     ClearRenderStats();
     // Draw buffer to clear
@@ -319,7 +319,7 @@ void RenderDevice::SetViewport(glm::ivec2 lower_left, glm::ivec2 size) {
 }
 
 // OPTI: check previous values to not reset
-void RenderDevice::SetRasterState(const RasterState state) {
+void RenderDevice::SetRasterState( RasterState state) {
     // default state
     bool enabled_culling = false;
     GLenum front_face = GL_CCW;
@@ -365,7 +365,7 @@ void RenderDevice::SetRasterState(const RasterState state) {
 }
 
 // TODO: state names are likely to get ugly, need other way
-void RenderDevice::SetDepthStencilState(const DepthStencilState state) {
+void RenderDevice::SetDepthStencilState( DepthStencilState state) {
     // default state
     bool depth_enabled = false;
     bool stencil_enabled = false;

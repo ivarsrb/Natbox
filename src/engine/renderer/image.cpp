@@ -5,7 +5,7 @@
 #include <stb/stb_image.h>
 
 namespace engine::renderer {
-Image::Image(const std::string file, const BitSize bit_size) {
+Image::Image(const std::string& file, BitSize bit_size) {
     //stbi_set_flip_vertically_on_load(true);
     bit_size_ = bit_size;
     if (bit_size_ == BitSize::k8bit) {

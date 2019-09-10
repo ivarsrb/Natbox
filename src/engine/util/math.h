@@ -17,7 +17,7 @@ public:
     };
     SphericVector(): radius(0), theta(0), phi(0), azimuth_axis_(AzimuthAxis::kY) {}
     // Vector in cartesian coordinate system is passed and transformed to spheric
-    void InitFromCartesian(const tp::Vec3 &c_point, const AzimuthAxis azimuth = AzimuthAxis::kY);
+    void InitFromCartesian(const tp::Vec3 &c_point, AzimuthAxis azimuth = AzimuthAxis::kY);
     // Convert spherical vector to cartesian vector
     tp::Vec3 GetCartesian() const;
 
@@ -37,7 +37,7 @@ private:
 // Use glm function to normalize, but return same vector vector if given vector is zero
 tp::Vec3 NormalizeSafe(const tp::Vec3 &vector);
 // If axis is 0 return the same point, without this rotation would be - nan
-tp::Vec3 RotateSafe(const tp::Vec3 &point, const tp::Real angle, const tp::Vec3 &axis);
+tp::Vec3 RotateSafe(const tp::Vec3 &point, tp::Real angle, const tp::Vec3 &axis);
 // Find given vectors projections vector onto XZ plane
 tp::Vec3 GetXZProj(const tp::Vec3 &vector);
 

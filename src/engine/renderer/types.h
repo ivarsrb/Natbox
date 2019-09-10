@@ -48,7 +48,7 @@ enum RenderDataTypes {
     kDouble
 };
 // Converts renderer type constant to OpenGL constant
-inline GLenum ToApiType(const RenderDataTypes type) {
+inline GLenum ToApiType( RenderDataTypes type) {
     const GLenum ogl_types[] = { GL_BYTE, GL_SHORT, GL_INT, GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT, GL_UNSIGNED_INT, GL_HALF_FLOAT, GL_FLOAT, GL_DOUBLE };
     if (type < 0 || type >= (sizeof(ogl_types) / sizeof(ogl_types[0]))) {
         throw std::out_of_range("(Types) API type out of range!");
