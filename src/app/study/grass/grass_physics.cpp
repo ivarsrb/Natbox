@@ -28,13 +28,11 @@ void GrassPhysics::Reset() {
     bend_.displacement_ang = 0;
 }
 
+// Logic: grass blade consists of 4 edges. Motion is calculated only for top edge, all other
+//        edges are calculated as propogation of motion toward grass root (1st edge)
+// Several motions are combined together to form final motion
+// Final motions consists of independant motions added together by edge rotation
 void GrassPhysics::Update(engine::tp::Real dt, std::vector<GrassModel::Edge> &edges, const std::vector<GrassModel::Edge> &static_edges, const engine::tp::Vec3 &wind_vec) {
-        // Logic: grass blade consists of 4 edges. Motion is calculated only for top edge, all other
-    //  edges are calculated as propogation of motion toward grass root (1st edge)
-    // Several motions are combined together to form final motion
-
-    // Final motions consists of independant motions added together by edge rotation
-
     // TODO: maybe make motions concatination beautifull
     // Bend
     engine::tp::Vec3 adjusted_wind_vec = engine::util::math::RotateSafe(wind_vec, -swing_.displacement_ang, engine::util::math::kGroundNormal);
@@ -118,8 +116,8 @@ GrassPhysics::Rotation GrassPhysics::Bend(engine::tp::Real dt, const engine::tp:
     return rotation;
 }
 
+// In this motion growth vector is being replaced by growth projection vector on the ground plane
 GrassPhysics::Rotation GrassPhysics::Swing(engine::tp::Real dt, const engine::tp::Vec3 &wind_vec, const std::vector<GrassModel::Edge> &edges) {
-    // In this motion growth vector is being replaced by growth projection vector on the ground plane
     //  because we want our rotation to be always about ground normal
     engine::tp::Vec3 growth_proj_vec = engine::util::math::GetXZProj(swing_.orientation.growth_vec);
     engine::tp::Vec3 growth_proj_vec_static = engine::util::math::GetXZProj(props_.orientation.growth_vec);
