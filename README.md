@@ -51,7 +51,7 @@ To add new application:
 5. Pass application name as a first command line argument.
 6. Develop an application using */engine* helpers. 
 ### Existing applications
-*grass* - Physically based grass simulation based on ["A simulation on grass swaying withdynamic wind force"](https://link.springer.com/article/10.1007/s00371-016-1263-7) paper 
+*grass* - Physically based grass simulation based on ["A simulation on grass swaying with dynamic wind force"](https://link.springer.com/article/10.1007/s00371-016-1263-7) paper 
 (Lee, Lo, Chu, Chang 2016).
 ### Author
 Designed and developed by [Ivars Rb.](https://github.com/ivarsrb)
