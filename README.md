@@ -37,7 +37,7 @@ to assist the developmental process.
 Application is an actual implementation of a rendering application that uses *engine* facilities.
 There are many application in a project.  
 Study applications are used to study rendering of certain phenomenon while basic applications are usually larger in scale.  
-Engine cconsists of several sub-modules, but all have the same purpose - to assist application development.  
+Engine consists of several sub-modules, but all have the same purpose - to assist application development.  
 - platform - helps setting up platform for application (application base class, gui, keyboard etc.).
 - renderer - assists rendering process - abstraction of graphics API, helper classes for models, images etc.).
 - util - helper utilities.
@@ -51,7 +51,7 @@ To add new application:
 5. Pass application name as a first command line argument.
 6. Develop an application using */engine* helpers. 
 ### Existing applications
-grass - Physically based grass simulation based on ["A simulation on grass swaying withdynamic wind force"](https://link.springer.com/article/10.1007/s00371-016-1263-7) paper 
+*grass* - Physically based grass simulation based on ["A simulation on grass swaying withdynamic wind force"](https://link.springer.com/article/10.1007/s00371-016-1263-7) paper 
 (Lee, Lo, Chu, Chang 2016).
 ### Author
 Designed and developed by [Ivars Rb.](https://github.com/ivarsrb)
