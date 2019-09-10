@@ -44,13 +44,14 @@ Engine cconsists of several sub-modules, but all have the same purpose - to assi
 - core - basic types and concepts used by all applications.  
 ### Adding new application
 To add new application:
-1. Add new folder in '*src/app/'* and name it after your application.
+1. Add new folder in the '*src/app/'* directory and name it after your application.
 2. Add application source files (.h and .cpp) that inherit from IPlatformApp application interface.
 3. Configure various parameter by adding *config.h* file.
 4. Add application to main factory.
 5. Pass application name as a first command line argument.
 6. Develop an application using */engine* helpers. 
 ### Existing applications
-
-## Author
+grass - Physically based grass simulation based on ["A simulation on grass swaying withdynamic wind force"](https://link.springer.com/article/10.1007/s00371-016-1263-7) paper 
+(Lee, Lo, Chu, Chang 2016).
+### Author
 Designed and developed by [Ivars Rb.](https://github.com/ivarsrb)
