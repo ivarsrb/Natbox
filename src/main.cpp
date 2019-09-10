@@ -2,19 +2,16 @@
 #include <exception>
 #include <memory>
 #include <optional>
-//#include "app/study/terrain/app.h"
 #include "app/study/grass/app.h"
-//#include "app/landscape/app.h"
+#include "app/landscape/app.h"
 
 // Choose app based on parameter string
 std::unique_ptr<engine::platform::IPlatformApp> AppFactory(const std::string &app_string) {
     std::unique_ptr<engine::platform::IPlatformApp> app;
-    if (app_string == "terrain") {
-        //app = std::make_unique<app::study::terrain::App>();
-    } else if (app_string == "grass") { 
+    if (app_string == "grass") { 
         app = std::make_unique<app::study::grass::App>();
     } else if (app_string == "landscape") { 
-      //  app = std::make_unique<app::landscape::App>();
+        app = std::make_unique<app::landscape::App>();
     } else {
         throw std::runtime_error("(main) unknown app '" + app_string + "'");
     }

@@ -1,6 +1,5 @@
 #pragma once
 #include <engine/platform/i_platform_app.h>
-#include "entity.h"
 
 namespace app::landscape {
 class App : public engine::platform::IPlatformApp {
@@ -19,7 +18,5 @@ private:
     void MouseButtonPress(const engine::platform::Input &input) override;
     void MouseScroll(const engine::platform::Input &input) override;
     void Init();
-
-    EntityManager entity_manager_;
 };
 };

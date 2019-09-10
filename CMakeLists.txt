@@ -37,10 +37,6 @@ set(SOURCES
             ${SOURCE_DIR}/engine/util/math.cpp
 
             # applications source
-            #${SOURCE_DIR}/app/study/terrain/app.cpp
-            #${SOURCE_DIR}/app/study/terrain/terrain.cpp
-            #${SOURCE_DIR}/app/study/terrain/tile.cpp  
-
             ${SOURCE_DIR}/app/study/grass/app.cpp
             ${SOURCE_DIR}/app/study/grass/renderer.cpp
             ${SOURCE_DIR}/app/study/grass/grass_entity.cpp
@@ -51,7 +47,7 @@ set(SOURCES
             ${SOURCE_DIR}/app/study/grass/wind_entity.cpp
             ${SOURCE_DIR}/app/study/grass/wind_renderer.cpp
 
-            #${SOURCE_DIR}/app/landscape/app.cpp
+            ${SOURCE_DIR}/app/landscape/app.cpp
     )
 
 #### Packages
