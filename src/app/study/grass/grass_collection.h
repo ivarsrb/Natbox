@@ -11,8 +11,6 @@ public:
     void Update(engine::tp::Real dt, const WindEntity &wind_entity);
     //void Render(engine::renderer::RenderDevice &render_device);
     uint32_t GetTotalVertexCount() const;
-    std::vector<GrassEntity> collection;
-private:
-    
+    std::vector<GrassEntity> collection;    
 };
 }; // grass

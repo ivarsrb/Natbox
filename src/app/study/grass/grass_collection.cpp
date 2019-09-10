@@ -21,9 +21,4 @@ void GrassCollection::Update(engine::tp::Real dt, const WindEntity &wind_entity)
         entity.Update(dt, wind_entity);
     }
 }
-/*
-void GrassCollection::Render(engine::renderer::RenderDevice &render_device) {
-
-}*/
-
 }; // grass

@@ -4,6 +4,8 @@
 #include "wind_entity.h"
 #include "renderer.h"
 
+// Main application file for grass rendering simulation.
+// Based on paper  'A simulation on grass swaying with dynamic wind force'
 namespace app::study::grass {
 class App : public engine::platform::IPlatformApp {
 public:

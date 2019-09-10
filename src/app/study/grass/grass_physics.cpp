@@ -28,7 +28,6 @@ void GrassPhysics::Reset() {
     bend_.displacement_ang = 0;
 }
 
-
 void GrassPhysics::Update(engine::tp::Real dt, std::vector<GrassModel::Edge> &edges, const std::vector<GrassModel::Edge> &static_edges, const engine::tp::Vec3 &wind_vec) {
         // Logic: grass blade consists of 4 edges. Motion is calculated only for top edge, all other
     //  edges are calculated as propogation of motion toward grass root (1st edge)
@@ -56,7 +55,6 @@ void GrassPhysics::Update(engine::tp::Real dt, std::vector<GrassModel::Edge> &ed
         edges.at(i).position = engine::util::math::RotateSafe(edges.at(i).position, current_angle, rotation_s.axis);
     }
 }
-
 
 // Rotate always about x axis, adjust wind according to bend effect
 GrassPhysics::Rotation GrassPhysics::Bend(engine::tp::Real dt, const engine::tp::Vec3 &wind_vec, const std::vector<GrassModel::Edge> &edges) {
@@ -186,9 +184,6 @@ GrassPhysics::Rotation GrassPhysics::Swing(engine::tp::Real dt, const engine::tp
     return rotation;
 }
 
-
-
-
 // Calculate and return set of fixed properties from edge data
 void GrassPhysics::GetPropertiesFromEdges(Properties &props, const std::vector<GrassModel::Edge> &edges, const engine::tp::Real mass, const engine::tp::Real width) {
     // Mass
@@ -212,7 +207,7 @@ void GrassPhysics::GetPropertiesFromEdges(Properties &props, const std::vector<G
 // FIXME: when blade is straight up we can not determine its orientation (sode vec, normal vec), and we get error
 // Probably need to get orentation straight from entity itself  or forbid to have fully straight-up grass model
 // The same problem occurs when tip is slightly offset to left or right, orientation vector is not straight and bending motion screws up
-void GrassPhysics::GetOrientationFromEdges(Orientation &orient, const std::vector<GrassModel::Edge> &edges) {
+void GrassPhysics::GetOrientationFromEdges(Orientation &orient, const std::vector<GrassModel::Edge> &edges) { 
     orient.growth_vec = edges.back().position - edges.front().position;
     orient.side_vec = engine::util::math::NormalizeSafe(glm::cross(orient.growth_vec, engine::util::math::kGroundNormal));
     orient.normal_vec = engine::util::math::NormalizeSafe(glm::cross(orient.side_vec, orient.growth_vec));
@@ -220,7 +215,4 @@ void GrassPhysics::GetOrientationFromEdges(Orientation &orient, const std::vecto
     //util::Log::Write("M_grass: side vec ", glm::to_string(orient.side_vec));
     //util::Log::Write("M_grass: normal vec ", glm::to_string(orient.normal_vec));
 }
-
-
-
 }; // grass

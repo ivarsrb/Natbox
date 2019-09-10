@@ -18,10 +18,9 @@ public:
 private:
     GrassModel grass_model_;
     GrassPhysics grass_physics_;
-    // These property NEVER changes during simulation
-    engine::tp::Vec3 world_position_;
+    const engine::tp::Vec3 world_position_;
     // Angle of orientation about ground normal 
-    engine::tp::Real orientation_;
-    engine::tp::Real scale_;
+    const engine::tp::Real orientation_;
+    const engine::tp::Real scale_;
 };
 }; // grass

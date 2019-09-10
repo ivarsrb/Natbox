@@ -24,7 +24,7 @@ out VertexDataG {
 void main() 
 {    
     // predetermined
-    const float half_width = 0.4;
+    const float half_width = 0.1;
     const vec3 white_color = vec3(1.0, 1.0, 1.0);
 
     vec4 local_bottom_left = vec4(i[0].local_position + i[0].side_vec * -half_width, 1.0);
